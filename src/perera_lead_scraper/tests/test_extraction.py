@@ -10,6 +10,7 @@ import sys
 import logging
 import json
 import csv
+import difflib
 from typing import Dict, List, Any, Tuple
 from pathlib import Path
 import argparse
@@ -25,7 +26,7 @@ from sklearn.metrics import precision_recall_curve, confusion_matrix, f1_score, 
 # Add src directory to python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
-from src.perera_lead_scraper.config import Config
+from src.perera_lead_scraper.config import AppConfig
 from src.perera_lead_scraper.models.lead import Lead, MarketSector
 from src.perera_lead_scraper.models.source import DataSource, SourceType
 from src.perera_lead_scraper.pipeline.extraction_pipeline import LeadExtractionPipeline
@@ -90,7 +91,7 @@ class ExtractionTester:
             save_failed_documents: Whether to save copies of documents that failed extraction.
         """
         # Initialize configuration
-        self.config = Config(config_path) if config_path else Config()
+        self.config = AppConfig()
         
         # Set directories
         self.test_data_dir = Path(test_data_dir) if test_data_dir else TEST_DATA_DIR

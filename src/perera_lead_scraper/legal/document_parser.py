@@ -37,7 +37,7 @@ try:
 except ImportError:
     HAS_PDFPLUMBER = False
 
-from ..config import Config
+from ..config import AppConfig
 from ..utils.timeout import timeout_handler
 
 logger = logging.getLogger(__name__)
@@ -61,13 +61,13 @@ class DocumentParser:
         '.pdf', '.docx', '.doc', '.txt', '.html', '.htm', '.rtf'
     ]
     
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config: Optional[AppConfig] = None):
         """Initialize the document parser.
         
         Args:
             config: Configuration object. If None, will load the default config.
         """
-        self.config = config or Config()
+        self.config = config or AppConfig()
         self._check_dependencies()
         logger.info("Document parser initialized")
     

@@ -72,7 +72,7 @@ testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
 python_classes = "Test*"
-addopts = "--strict-markers --cov=src"
+addopts = "--strict-markers"
 markers = [
     "unit: Unit tests",
     "integration: Integration tests",

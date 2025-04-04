@@ -11,7 +11,7 @@ from typing import Dict, List, Any, Optional
 from pathlib import Path
 import json
 
-from ..config import Config
+from ..config import AppConfig
 
 logger = logging.getLogger(__name__)
 
@@ -28,13 +28,13 @@ class DocumentValidator:
     before being processed by the legal processor.
     """
     
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config: Optional[AppConfig] = None):
         """Initialize the document validator.
         
         Args:
             config: Configuration object. If None, will load the default config.
         """
-        self.config = config or Config()
+        self.config = config or AppConfig()
         self._load_validation_rules()
         logger.info("Document validator initialized")
         

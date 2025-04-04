@@ -12,7 +12,7 @@ from src.perera_lead_scraper.legal.document_parser import (
     ParseError,
     UnsupportedFormatError
 )
-from src.perera_lead_scraper.config import Config
+from src.perera_lead_scraper.config import AppConfig
 
 
 class TestDocumentParser(unittest.TestCase):
@@ -21,7 +21,7 @@ class TestDocumentParser(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures."""
         # Create a mock config
-        self.mock_config = MagicMock(spec=Config)
+        self.mock_config = MagicMock(spec=AppConfig)
         
         # Create parser instance
         with patch('src.perera_lead_scraper.legal.document_parser.HAS_PYPDF2', True), \

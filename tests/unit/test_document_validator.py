@@ -11,7 +11,7 @@ from src.perera_lead_scraper.legal.document_validator import (
     DocumentValidator,
     DocumentValidationError
 )
-from src.perera_lead_scraper.config import Config
+from src.perera_lead_scraper.config import AppConfig
 
 
 class TestDocumentValidator(unittest.TestCase):
@@ -20,7 +20,7 @@ class TestDocumentValidator(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures."""
         # Create a mock config
-        self.mock_config = MagicMock(spec=Config)
+        self.mock_config = MagicMock(spec=AppConfig)
         self.mock_config.get.return_value = 'config/legal_validation_rules.json'
         
         # Create a temporary validation rules file

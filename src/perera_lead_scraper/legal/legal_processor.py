@@ -6,12 +6,12 @@ related to construction projects, including permits, contracts, and regulatory f
 
 import re
 import logging
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple, Any, Union
 from pathlib import Path
 from datetime import datetime
 import json
 
-from ..config import Config
+from ..config import AppConfig
 from ..utils.timeout import timeout_handler
 from ..nlp.nlp_processor import NLPProcessor
 
@@ -38,13 +38,13 @@ class LegalProcessor:
     filings that might contain valuable lead information.
     """
     
-    def __init__(self, config: Optional[Config] = None):
+    def __init__(self, config: Optional[AppConfig] = None):
         """Initialize the legal processor.
         
         Args:
             config: Configuration object. If None, will load the default config.
         """
-        self.config = config or Config()
+        self.config = config or AppConfig()
         self._load_document_patterns()
         self.nlp_processor = NLPProcessor(config)
         logger.info("Legal processor initialized")
