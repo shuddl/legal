@@ -1,0 +1,299 @@
+{
+  "cities": [
+    {
+      "name": "los_angeles",
+      "base_url": "https://www.ladbsservices2.lacity.org/OnlineServices/",
+      "search_url": "https://www.ladbsservices2.lacity.org/OnlineServices/?service=plr",
+      "state": "CA",
+      "browser": "chromium",
+      "timeout_ms": 30000,
+      "form": {
+        "fields": {
+          "date_from": {
+            "selector": "#txtDateFrom",
+            "type": "date",
+            "date_format": "%m/%d/%Y",
+            "default_value": "01/01/2025",
+            "clear_first": true
+          },
+          "date_to": {
+            "selector": "#txtDateTo",
+            "type": "date",
+            "date_format": "%m/%d/%Y",
+            "clear_first": true
+          },
+          "project_type": {
+            "selector": "#ddlPermitType",
+            "type": "select",
+            "default_value": "1"
+          },
+          "community": {
+            "selector": "#ddlCommunity",
+            "type": "select",
+            "default_value": "0"
+          }
+        },
+        "submit_selector": "#btnSearch"
+      },
+      "results": {
+        "results_selector": "#gvPermitList",
+        "no_results_selector": "#pNoResult",
+        "item_selector": "#gvPermitList tr:not(:first-child)",
+        "fields": {
+          "permit_number": {
+            "selector": "td:nth-child(1) a",
+            "extraction_type": "text"
+          },
+          "address": {
+            "selector": "td:nth-child(2)",
+            "extraction_type": "text"
+          },
+          "description": {
+            "selector": "td:nth-child(3)",
+            "extraction_type": "text"
+          },
+          "status": {
+            "selector": "td:nth-child(4)",
+            "extraction_type": "text"
+          },
+          "application_date": {
+            "selector": "td:nth-child(5)",
+            "extraction_type": "text"
+          },
+          "url": {
+            "selector": "td:nth-child(1) a",
+            "extraction_type": "href"
+          }
+        }
+      },
+      "pagination": {
+        "type": "click",
+        "next_selector": "#btnNext",
+        "disabled_attribute": "disabled"
+      },
+      "fetch_details": true,
+      "details": {
+        "fields": {
+          "project_name": {
+            "selector": "#lblWorkDescription",
+            "extraction_type": "text"
+          },
+          "permit_type": {
+            "selector": "#lblPermitType",
+            "extraction_type": "text"
+          },
+          "value": {
+            "selector": "#lblValuation",
+            "extraction_type": "text"
+          },
+          "applicant": {
+            "selector": "#lblApplicant",
+            "extraction_type": "text"
+          },
+          "owner": {
+            "selector": "#lblOwner",
+            "extraction_type": "text"
+          },
+          "contractor": {
+            "selector": "#lblContractor",
+            "extraction_type": "text"
+          },
+          "zip": {
+            "selector": "#lblZipCode",
+            "extraction_type": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "san_diego",
+      "base_url": "https://opendsd.sandiego.gov/",
+      "search_url": "https://opendsd.sandiego.gov/web/approvals/",
+      "state": "CA",
+      "browser": "chromium",
+      "timeout_ms": 30000,
+      "form": {
+        "fields": {
+          "approval_type": {
+            "selector": "#in-approval-type",
+            "type": "select",
+            "default_value": "building-permit"
+          },
+          "status": {
+            "selector": "#in-status",
+            "type": "select",
+            "default_value": "open"
+          },
+          "from_date": {
+            "selector": "#in-date-from",
+            "type": "date",
+            "default_value": "01/01/2025",
+            "date_format": "%m/%d/%Y"
+          }
+        },
+        "submit_selector": "#cw-search-button"
+      },
+      "results": {
+        "results_selector": "#cw-search-results-container",
+        "no_results_selector": ".table-no-results",
+        "item_selector": ".cw-search-result",
+        "fields": {
+          "permit_number": {
+            "selector": ".result-first-column .result-link",
+            "extraction_type": "text"
+          },
+          "project_name": {
+            "selector": ".result-summary",
+            "extraction_type": "text"
+          },
+          "address": {
+            "selector": ".result-value:nth-child(1)",
+            "extraction_type": "text"
+          },
+          "status": {
+            "selector": ".result-value:nth-child(2)",
+            "extraction_type": "text"
+          },
+          "application_date": {
+            "selector": ".result-value:nth-child(3)",
+            "extraction_type": "text"
+          },
+          "url": {
+            "selector": ".result-first-column .result-link",
+            "extraction_type": "href"
+          }
+        }
+      },
+      "pagination": {
+        "type": "click",
+        "next_selector": ".page-link[aria-label='Next']",
+        "disabled_class": "disabled"
+      },
+      "fetch_details": true,
+      "details": {
+        "fields": {
+          "value": {
+            "selector": ".detail-status dt:contains('Estimated Cost') + dd",
+            "extraction_type": "text"
+          },
+          "description": {
+            "selector": ".detail-section-scope .detail-content",
+            "extraction_type": "text"
+          },
+          "applicant": {
+            "selector": ".detail-contacts .detail-contact-applicant .detail-contact-name",
+            "extraction_type": "text"
+          },
+          "owner": {
+            "selector": ".detail-contacts .detail-contact-owner .detail-contact-name",
+            "extraction_type": "text"
+          }
+        }
+      }
+    },
+    {
+      "name": "irvine",
+      "base_url": "https://www.cityofirvine.org/",
+      "search_url": "https://etrakit.cityofirvine.org/etrakit/",
+      "state": "CA",
+      "browser": "chromium",
+      "timeout_ms": 30000,
+      "intermediate_steps": [
+        {
+          "type": "click",
+          "description": "Navigate to search page",
+          "selector": "a[href='./Search/permit.aspx']",
+          "wait_for": "#searchForm"
+        }
+      ],
+      "form": {
+        "fields": {
+          "search_type": {
+            "selector": "#ddlSearchBy",
+            "type": "select",
+            "default_value": "Date Range"
+          },
+          "from_date": {
+            "selector": "#txtDateFrom",
+            "type": "date",
+            "date_format": "%m/%d/%Y",
+            "default_value": "01/01/2025"
+          },
+          "to_date": {
+            "selector": "#txtDateTo",
+            "type": "date",
+            "date_format": "%m/%d/%Y"
+          },
+          "permit_type": {
+            "selector": "#ctl00_PlaceHolderMain_generalSearchForm_ddlPermitType",
+            "type": "select",
+            "default_value": "All"
+          },
+          "status": {
+            "selector": "#ctl00_PlaceHolderMain_generalSearchForm_ddlPermitStatus",
+            "type": "select",
+            "default_value": "All"
+          }
+        },
+        "submit_selector": "#ctl00_PlaceHolderMain_btnSearch"
+      },
+      "results": {
+        "results_selector": "#ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList",
+        "no_results_selector": "#ctl00_PlaceHolderMain_lblNoSearchRslts",
+        "item_selector": "#ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList tr.GridViewRow, #ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList tr.GridViewAlternatingRow",
+        "fields": {
+          "permit_number": {
+            "selector": "td:nth-child(1) a",
+            "extraction_type": "text"
+          },
+          "description": {
+            "selector": "td:nth-child(4)",
+            "extraction_type": "text"
+          },
+          "address": {
+            "selector": "td:nth-child(3)",
+            "extraction_type": "text"
+          },
+          "status": {
+            "selector": "td:nth-child(5)",
+            "extraction_type": "text"
+          },
+          "application_date": {
+            "selector": "td:nth-child(2)",
+            "extraction_type": "text"
+          },
+          "url": {
+            "selector": "td:nth-child(1) a",
+            "extraction_type": "href"
+          }
+        }
+      },
+      "pagination": {
+        "type": "click",
+        "next_selector": "#ctl00_PlaceHolderMain_dgvPermitList_gdvPermitList_ctl13_btnNext",
+        "disabled_attribute": "disabled"
+      },
+      "fetch_details": true,
+      "details": {
+        "fields": {
+          "value": {
+            "selector": "#ctl00_PlaceHolderMain_lblValuation",
+            "extraction_type": "text"
+          },
+          "project_name": {
+            "selector": "#ctl00_PlaceHolderMain_lblDescription",
+            "extraction_type": "text"
+          },
+          "applicant": {
+            "selector": "#ctl00_PlaceHolderMain_lblApplicantName",
+            "extraction_type": "text"
+          },
+          "contractor": {
+            "selector": "#ctl00_PlaceHolderMain_contractorData_lblContractorCompany",
+            "extraction_type": "text"
+          }
+        }
+      }
+    }
+  ]
+}

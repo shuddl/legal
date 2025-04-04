@@ -1,0 +1,59 @@
+{
+  "document_types": ["permit", "contract", "zoning", "regulatory"],
+  "required_fields": {
+    "permit": [
+      {"field": "permit_number", "regex": "\\S+"},
+      {"field": "work_description", "regex": ".+", "min_length": 10}
+    ],
+    "contract": [
+      {"field": "party_a", "regex": ".+"},
+      {"field": "party_b", "regex": ".+"}
+    ],
+    "zoning": [
+      {"field": "case_number", "regex": "\\S+"},
+      {"field": "request_description", "regex": ".+", "min_length": 10}
+    ],
+    "regulatory": [
+      {"field": "filing_number", "regex": "\\S+"},
+      {"field": "filing_type", "regex": ".+"}
+    ]
+  },
+  "min_content_length": 200,
+  "optional_fields": {
+    "permit": [
+      {"field": "issue_date", "regex": "\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}"},
+      {"field": "property_address", "regex": ".+", "min_length": 5},
+      {"field": "estimated_value", "regex": "\\d[\\d,.]*"},
+      {"field": "contractor", "regex": ".+"},
+      {"field": "property_owner", "regex": ".+"},
+      {"field": "permit_type", "regex": ".+"}
+    ],
+    "contract": [
+      {"field": "contract_date", "regex": "\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}|\\d{1,2}(?:st|nd|rd|th)?\\s+day\\s+of\\s+\\w+,?\\s+\\d{4}"},
+      {"field": "contract_amount", "regex": "\\d[\\d,.]*"},
+      {"field": "project_name", "regex": ".+"},
+      {"field": "completion_date", "regex": "\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}"},
+      {"field": "completion_duration", "regex": "\\d+\\s+(days|weeks|months)"},
+      {"field": "payment_terms", "regex": ".+", "min_length": 10}
+    ],
+    "zoning": [
+      {"field": "property_address", "regex": ".+", "min_length": 5},
+      {"field": "current_zoning", "regex": "[\\w-]+"},
+      {"field": "proposed_zoning", "regex": "[\\w-]+"},
+      {"field": "applicant", "regex": ".+"},
+      {"field": "hearing_date", "regex": "\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}"}
+    ],
+    "regulatory": [
+      {"field": "filing_date", "regex": "\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}"},
+      {"field": "project_name", "regex": ".+"},
+      {"field": "applicant", "regex": ".+"},
+      {"field": "authority", "regex": ".+"},
+      {"field": "project_description", "regex": ".+", "min_length": 20}
+    ]
+  },
+  "scoring": {
+    "required_field_weight": 10,
+    "optional_field_weight": 1,
+    "min_confidence_score": 60
+  }
+}

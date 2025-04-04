@@ -1,0 +1,77 @@
+{
+  "test_settings": {
+    "output_directory": "/Users/spencerpro/legal/tests/test_data/results",
+    "log_level": "INFO",
+    "generate_visualizations": true,
+    "save_failed_documents": true
+  },
+  "test_cases": [
+    {
+      "name": "building_permits",
+      "document_type": "building_permit",
+      "input_files": [
+        "/Users/spencerpro/legal/tests/test_data/documents/permits/building_permit_01.txt",
+        "/Users/spencerpro/legal/tests/test_data/documents/permits/building_permit_02.txt"
+      ],
+      "expected_results": [
+        "/Users/spencerpro/legal/tests/test_data/expected/building_permit_01_expected.json",
+        "/Users/spencerpro/legal/tests/test_data/expected/building_permit_02_expected.json"
+      ],
+      "thresholds": {
+        "precision": 0.85,
+        "recall": 0.85,
+        "f1_score": 0.85
+      }
+    },
+    {
+      "name": "construction_contracts",
+      "document_type": "construction_contract",
+      "input_files": [
+        "/Users/spencerpro/legal/tests/test_data/documents/contracts/construction_contract_01.txt"
+      ],
+      "expected_results": [
+        "/Users/spencerpro/legal/tests/test_data/expected/construction_contract_01_expected.json"
+      ],
+      "thresholds": {
+        "precision": 0.85,
+        "recall": 0.80,
+        "f1_score": 0.82
+      }
+    },
+    {
+      "name": "zoning_applications",
+      "document_type": "zoning_variance",
+      "input_files": [
+        "/Users/spencerpro/legal/tests/test_data/documents/zoning/zoning_application_01.txt"
+      ],
+      "expected_results": [
+        "/Users/spencerpro/legal/tests/test_data/expected/zoning_application_01_expected.json"
+      ],
+      "thresholds": {
+        "precision": 0.88,
+        "recall": 0.88,
+        "f1_score": 0.88
+      }
+    },
+    {
+      "name": "environmental_reports",
+      "document_type": "environmental_impact_report",
+      "input_files": [
+        "/Users/spencerpro/legal/tests/test_data/documents/regulatory/environmental_impact_report_01.txt"
+      ],
+      "expected_results": [
+        "/Users/spencerpro/legal/tests/test_data/expected/environmental_impact_report_01_expected.json"
+      ],
+      "thresholds": {
+        "precision": 0.82,
+        "recall": 0.80,
+        "f1_score": 0.81
+      }
+    }
+  ],
+  "performance_metrics": {
+    "enable_timing": true,
+    "enable_memory_tracking": true,
+    "benchmark_iterations": 3
+  }
+}

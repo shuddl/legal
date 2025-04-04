@@ -1,0 +1,47 @@
+{
+  "document_id": "BP-2023-1458",
+  "document_type": "building_permit",
+  "project_name": "New commercial building - Two-story retail space with office suites",
+  "project_address": "1250 Maple Avenue, Oakridge, CA 94563",
+  "project_value": 3750000,
+  "property_id": "048-256-033",
+  "construction_type": "commercial",
+  "construction_details": {
+    "square_footage": 24500,
+    "type": "Type II-B",
+    "stories": 2,
+    "use": "Mixed Use (B - Business, M - Mercantile)",
+    "zoning": "C-2 Commercial"
+  },
+  "project_timeline": {
+    "start_date": "2023-02-10",
+    "end_date": "2023-12-15"
+  },
+  "contractor": {
+    "name": "Westfield Construction Inc.",
+    "license": "BLD-589632",
+    "contact": {
+      "name": "John Peterson",
+      "phone": "(555) 123-4567",
+      "email": "john.peterson@westfieldconstruction.com"
+    }
+  },
+  "property_owner": {
+    "name": "Oakridge Commercial Properties LLC",
+    "contact": {
+      "name": "Sarah Johnson",
+      "phone": "(555) 987-6543",
+      "email": "sjohnson@oakridgecommercial.com"
+    }
+  },
+  "professionals": {
+    "architect": "Anderson & Partners Architecture",
+    "engineer": "StructureTech Engineering"
+  },
+  "approval": {
+    "date": "2023-01-28",
+    "official": "Michael Thompson, Building Official"
+  },
+  "source_file": "building_permit_01.txt",
+  "extraction_confidence": 0.95
+}

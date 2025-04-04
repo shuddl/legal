@@ -1,0 +1,207 @@
+{
+  "sources": [
+    {
+      "name": "construction_dive",
+      "url": "https://www.constructiondive.com/feeds/news/",
+      "type": "rss",
+      "category": "General Commercial Construction",
+      "active": true,
+      "requires_js": false,
+      "tags": ["commercial", "news"]
+    },
+    {
+      "name": "engineering_news_record",
+      "url": "https://www.enr.com/rss/all-news",
+      "type": "rss",
+      "category": "General Commercial Construction",
+      "active": true,
+      "requires_js": false,
+      "tags": ["commercial", "news"]
+    },
+    {
+      "name": "building_design_construction",
+      "url": "https://www.bdcnetwork.com/rss.xml",
+      "type": "rss",
+      "category": "General Commercial Construction",
+      "active": true,
+      "requires_js": false,
+      "tags": ["commercial", "news"]
+    },
+    {
+      "name": "healthcare_design_magazine",
+      "url": "https://healthcaredesignmagazine.com/feed/",
+      "type": "rss",
+      "category": "Healthcare",
+      "active": true,
+      "requires_js": false,
+      "tags": ["healthcare", "design"]
+    },
+    {
+      "name": "healthcare_construction_operations",
+      "url": "https://www.hconews.com/feed/",
+      "type": "rss",
+      "category": "Healthcare",
+      "active": true,
+      "requires_js": false,
+      "tags": ["healthcare", "operations"]
+    },
+    {
+      "name": "university_business",
+      "url": "https://universitybusiness.com/feed/",
+      "type": "rss",
+      "category": "Higher Education",
+      "active": true,
+      "requires_js": false,
+      "tags": ["education", "business"]
+    },
+    {
+      "name": "power_engineering",
+      "url": "https://www.power-eng.com/feed",
+      "type": "rss",
+      "category": "Energy/Utilities",
+      "active": true,
+      "requires_js": false,
+      "tags": ["energy", "engineering"]
+    },
+    {
+      "name": "utility_dive",
+      "url": "https://www.utilitydive.com/feeds/news/",
+      "type": "rss",
+      "category": "Energy/Utilities",
+      "active": true,
+      "requires_js": false,
+      "tags": ["utilities", "news"]
+    },
+    {
+      "name": "los_angeles_business_journal",
+      "url": "https://labusinessjournal.com/feed/",
+      "type": "rss",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "business"]
+    },
+    {
+      "name": "los_angeles_city_planning",
+      "url": "https://www.ladbsservices2.lacity.org/OnlineServices/?service=plr",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "los_angeles"
+      }
+    },
+    {
+      "name": "san_diego_city_planning",
+      "url": "https://opendsd.sandiego.gov/web/approvals/",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "san_diego"
+      }
+    },
+    {
+      "name": "irvine_city_planning",
+      "url": "https://etrakit.cityofirvine.org/etrakit/",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "irvine"
+      }
+    },
+    {
+      "name": "aia_construction_economics",
+      "url": "https://www.aia.org/pages/3401-construction-economics",
+      "type": "website",
+      "category": "General Commercial Construction",
+      "active": true,
+      "requires_js": true,
+      "tags": ["commercial", "statistics", "requires_browser"]
+    },
+    {
+      "name": "dod_contract_announcements",
+      "url": "https://www.defense.gov/News/Contracts/",
+      "type": "website",
+      "category": "Government",
+      "active": true,
+      "requires_js": false,
+      "tags": ["government", "contracts"]
+    },
+    {
+      "name": "census_bureau_construction_stats",
+      "url": "https://www.census.gov/construction/nrc/index.html",
+      "type": "website",
+      "category": "General Commercial Construction",
+      "active": true,
+      "requires_js": false,
+      "tags": ["statistics", "government"]
+    },
+    {
+      "name": "california_hospital_building_permits",
+      "url": "https://oshpd.ca.gov/construction-finance/past-projects/building-permits/",
+      "type": "website",
+      "category": "Healthcare",
+      "active": true,
+      "requires_js": false,
+      "tags": ["healthcare", "california", "permits"]
+    },
+    {
+      "name": "california_state_public_works",
+      "url": "https://www.spwb.ca.gov/CurrentProjects.html",
+      "type": "website",
+      "category": "Government",
+      "active": true,
+      "requires_js": false,
+      "tags": ["government", "california"]
+    },
+    {
+      "name": "permits_api",
+      "url": "https://api.permits.example.com/v1/health",
+      "type": "api",
+      "category": "API Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "permits"],
+      "config": {
+        "auth_required": true,
+        "auth_type": "api_key",
+        "header_name": "X-API-Key",
+        "api_key_env_var": "PERMITS_API_KEY"
+      }
+    },
+    {
+      "name": "construction_stats_api",
+      "url": "https://api.stats.example.com/v1/status",
+      "type": "api",
+      "category": "API Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "statistics"],
+      "config": {
+        "auth_required": true,
+        "auth_type": "bearer",
+        "auth_token_env_var": "STATS_API_TOKEN"
+      }
+    },
+    {
+      "name": "bidding_opportunities_api",
+      "url": "https://api.bids.example.com/status",
+      "type": "api",
+      "category": "API Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "bids"],
+      "config": {
+        "auth_required": false
+      }
+    }
+  ]
+}

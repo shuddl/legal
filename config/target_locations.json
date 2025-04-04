@@ -1,0 +1,68 @@
+{
+  "southern_california": {
+    "states": ["CA", "California"],
+    "counties": [
+      "Los Angeles", "Orange", "San Diego", "Riverside", 
+      "San Bernardino", "Ventura", "Imperial"
+    ],
+    "cities": [
+      "Los Angeles", "San Diego", "Irvine", "Anaheim", "Long Beach",
+      "Santa Ana", "Riverside", "San Bernardino", "Oxnard", "Fontana",
+      "Huntington Beach", "Moreno Valley", "Santa Clarita", "Ontario",
+      "Garden Grove", "Oceanside", "Rancho Cucamonga", "Corona", "Lancaster",
+      "Palmdale", "Pomona", "Torrance", "Pasadena", "Orange", "Fullerton",
+      "Costa Mesa", "Victorville", "Santa Monica", "Burbank", "Newport Beach",
+      "Chula Vista", "El Monte", "Downey", "Inglewood", "West Covina",
+      "Norwalk", "Carlsbad", "Murrieta", "Temecula", "Mission Viejo",
+      "San Marcos", "Escondido", "Vista", "South Gate", "Rialto",
+      "Hesperia", "Carson", "Santa Barbara", "San Clemente", "Laguna Beach",
+      "Beverly Hills", "Culver City", "Glendale", "Century City", "Malibu",
+      "Marina del Rey", "Calabasas", "Hermosa Beach", "Manhattan Beach", 
+      "Redondo Beach", "Laguna Niguel", "Dana Point", "La Jolla", "Del Mar"
+    ]
+  },
+  "northern_california": {
+    "states": ["CA", "California"],
+    "counties": [
+      "San Francisco", "San Mateo", "Santa Clara", "Alameda",
+      "Contra Costa", "Sacramento", "San Joaquin", "Marin", "Sonoma",
+      "Napa", "Monterey", "Santa Cruz", "Solano", "Yolo"
+    ],
+    "cities": [
+      "San Francisco", "San Jose", "Sacramento", "Oakland", "Fremont",
+      "Santa Rosa", "Sunnyvale", "Concord", "Santa Clara", "Berkeley",
+      "Fairfield", "Hayward", "Vallejo", "Richmond", "Antioch",
+      "Palo Alto", "Cupertino", "Mountain View", "Napa", "Redwood City",
+      "San Mateo", "Walnut Creek", "South San Francisco", "San Rafael",
+      "San Ramon", "Pleasanton", "Milpitas", "Dublin", "Livermore",
+      "Menlo Park", "Foster City", "Burlingame", "San Bruno", "Campbell",
+      "Saratoga", "Los Gatos", "Morgan Hill", "Davis", "Roseville",
+      "Folsom", "Elk Grove", "Rocklin", "Vacaville", "Woodland"
+    ]
+  },
+  "central_california": {
+    "states": ["CA", "California"],
+    "counties": [
+      "Fresno", "Kern", "Tulare", "San Luis Obispo", "Santa Barbara",
+      "Stanislaus", "Merced", "Madera", "Kings"
+    ],
+    "cities": [
+      "Fresno", "Bakersfield", "Visalia", "San Luis Obispo", "Modesto",
+      "Merced", "Clovis", "Hanford", "Porterville", "Madera",
+      "Tulare", "Delano", "Santa Maria", "Lompoc", "Paso Robles",
+      "Turlock", "Atascadero", "Arroyo Grande", "Pismo Beach", "Kingsburg"
+    ]
+  },
+  "southwest": {
+    "states": ["AZ", "Arizona", "NV", "Nevada"],
+    "counties": [
+      "Maricopa", "Pima", "Clark", "Washoe"
+    ],
+    "cities": [
+      "Phoenix", "Tucson", "Mesa", "Chandler", "Scottsdale",
+      "Gilbert", "Glendale", "Tempe", "Las Vegas", "Henderson",
+      "Reno", "Sparks", "Paradise", "North Las Vegas", "Summerlin",
+      "Flagstaff", "Prescott", "Yuma", "Carson City", "Lake Havasu"
+    ]
+  }
+}

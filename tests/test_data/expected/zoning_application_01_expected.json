@@ -1,0 +1,82 @@
+{
+  "document_id": "ZV-2023-0085",
+  "document_type": "zoning_variance",
+  "application_date": "2023-02-12",
+  "project_name": "48-unit multi-family residential complex with mixed-income units",
+  "project_address": "475 Pinecrest Boulevard, Pinecrest, CA 90842",
+  "project_value": 9800000,
+  "property_id": "082-371-045",
+  "construction_type": "residential",
+  "construction_details": {
+    "lot_area": 78408,
+    "lot_area_acres": 1.8,
+    "square_footage": 52000,
+    "stories": 4,
+    "height": 45,
+    "units": 48,
+    "unit_mix": {
+      "one_bedroom": 12,
+      "two_bedroom": 28,
+      "three_bedroom": 8
+    },
+    "parking_spaces": 72,
+    "current_zoning": "R-3 (Multiple Family Residential)",
+    "current_use": "Vacant Land"
+  },
+  "variances": [
+    {
+      "type": "height",
+      "from": 35,
+      "to": 45,
+      "unit": "feet"
+    },
+    {
+      "type": "density",
+      "from": 24,
+      "to": 26.6,
+      "unit": "units/acre"
+    },
+    {
+      "type": "parking",
+      "from": 1.75,
+      "to": 1.5,
+      "unit": "spaces per unit"
+    }
+  ],
+  "project_timeline": {
+    "start_date": "2023-05-01",
+    "completion_date": "2024-06-30"
+  },
+  "applicant": {
+    "name": "Evergreen Development Group LLC",
+    "address": "3300 Corporate Way, Suite 120, Pinecrest, CA 90841",
+    "contact": {
+      "name": "Michael Turner",
+      "title": "Development Manager",
+      "phone": "(555) 345-6789",
+      "email": "mturner@evergreendev.com"
+    }
+  },
+  "professionals": {
+    "architect": {
+      "name": "Urban Design Partners",
+      "contact": {
+        "name": "Jennifer Lee",
+        "credentials": "AIA",
+        "phone": "(555) 567-8901",
+        "email": "jlee@urbandesignpartners.com"
+      }
+    },
+    "civil_engineer": {
+      "name": "Carson Engineering Group",
+      "contact": {
+        "name": "Thomas Carson",
+        "credentials": "P.E.",
+        "phone": "(555) 234-5678",
+        "email": "tcarson@carsoneng.com"
+      }
+    }
+  },
+  "source_file": "zoning_application_01.txt",
+  "extraction_confidence": 0.90
+}

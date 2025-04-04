@@ -1,0 +1,50 @@
+{
+  "document_type": "construction_contract",
+  "contract_date": "2023-02-05",
+  "project_name": "Sunnyvale Community College - Student Union Building Renovation",
+  "project_address": "1100 Education Drive, Sunnyvale, CA 93721",
+  "project_value": 4250000,
+  "project_description": "Renovation of existing 18,000 sq ft Student Union Building including interior reconfiguration, ADA compliance upgrades, HVAC replacement, electrical systems modernization, and exterior facade improvements.",
+  "construction_type": "renovation",
+  "construction_details": {
+    "square_footage": 18000,
+    "type": "commercial"
+  },
+  "project_timeline": {
+    "start_date": "2023-03-15",
+    "completion_date": "2023-08-20"
+  },
+  "owner": {
+    "name": "Sunnyvale Community College District",
+    "address": "1100 Education Drive, Sunnyvale, CA 93721",
+    "contact": {
+      "name": "Dr. Patricia Williams",
+      "title": "Facilities Director",
+      "phone": "(555) 789-1234",
+      "email": "pwilliams@sccd.edu"
+    }
+  },
+  "contractor": {
+    "name": "Premier Builders Inc.",
+    "address": "2450 Construction Avenue, Suite 200, Sunnyvale, CA 93722",
+    "license": "784512",
+    "contact": {
+      "name": "Mark Rodriguez",
+      "title": "President",
+      "phone": "(555) 456-7890",
+      "email": "mrodriguez@premierbuilders.com"
+    }
+  },
+  "architect": {
+    "name": "Johnson & Miller Architects",
+    "address": "800 Design Street, Sunnyvale, CA 93725",
+    "contact": {
+      "name": "Elizabeth Johnson",
+      "title": "Principal",
+      "phone": "(555) 321-6789",
+      "email": "ejohnson@jmarchitects.com"
+    }
+  },
+  "source_file": "construction_contract_01.txt",
+  "extraction_confidence": 0.88
+}

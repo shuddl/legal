@@ -1,0 +1,128 @@
+{
+  "sites": [
+    {
+      "name": "construction_dive",
+      "base_url": "https://www.constructiondive.com",
+      "category_urls": [
+        "https://www.constructiondive.com/topic/commercial-building/",
+        "https://www.constructiondive.com/topic/design/",
+        "https://www.constructiondive.com/topic/operations/"
+      ],
+      "use_sitemap": true,
+      "sitemap_url": "https://www.constructiondive.com/sitemap-posts.xml",
+      "article_url_pattern": "constructiondive\\.com\\/news\\/",
+      "article_list_selector": ".feed__item",
+      "article_url_selector": "h3.feed__title a",
+      "article_title_selector": "h3.feed__title",
+      "article_summary_selector": "p.feed__description",
+      "article_date_selector": ".feed__pub-date",
+      "article_content_selector": ".article-body__content-block",
+      "page_title_selector": "h1.article-head__headline",
+      "page_date_selector": ".article-head__publish-date",
+      "page_author_selector": ".article-head__author-name",
+      "page_category_selector": ".article-head__topics a",
+      "content_remove_selectors": [".ad", ".subscription-prompt", ".related-articles"],
+      "crawl_delay": 3,
+      "max_articles": 10,
+      "fetch_content": true,
+      "construction_keywords": ["construction", "building", "project", "development"],
+      "target_categories": ["healthcare", "education", "energy"]
+    },
+    {
+      "name": "engineering_news_record",
+      "base_url": "https://www.enr.com",
+      "category_urls": [
+        "https://www.enr.com/topics/70-business",
+        "https://www.enr.com/topics/775-infrastructure",
+        "https://www.enr.com/topics/774-buildings"
+      ],
+      "article_list_selector": ".article-list-item",
+      "article_url_selector": "h3 a",
+      "article_title_selector": "h3",
+      "article_summary_selector": ".article-summary",
+      "article_date_selector": ".article-list-item__date",
+      "article_content_selector": ".article-body",
+      "page_title_selector": "h1.page-title",
+      "page_date_selector": ".article__date",
+      "page_author_selector": ".article__byline",
+      "page_category_selector": ".article__tax-topics a",
+      "content_remove_selectors": [".bnr", ".article__ads", ".social-share"],
+      "crawl_delay": 5,
+      "max_articles": 10,
+      "fetch_content": true,
+      "construction_keywords": ["construction", "building", "project"],
+      "target_categories": ["healthcare", "education", "energy"]
+    },
+    {
+      "name": "healthcare_design",
+      "base_url": "https://healthcaredesignmagazine.com",
+      "category_urls": [
+        "https://healthcaredesignmagazine.com/projects/",
+        "https://healthcaredesignmagazine.com/news/"
+      ],
+      "article_list_selector": ".item",
+      "article_url_selector": "h3 a",
+      "article_title_selector": "h3",
+      "article_summary_selector": ".post-text p",
+      "article_date_selector": ".post-date",
+      "article_content_selector": ".the-content",
+      "page_title_selector": "h1.post-title",
+      "page_date_selector": ".post-date",
+      "page_author_selector": ".post-author",
+      "page_category_selector": ".post-categories a",
+      "content_remove_selectors": [".advert", ".newsletter-signup"],
+      "crawl_delay": 3,
+      "max_articles": 10,
+      "fetch_content": true,
+      "construction_keywords": ["construction", "building", "renovation", "facility"],
+      "target_categories": ["healthcare"]
+    },
+    {
+      "name": "commercial_property_executive",
+      "base_url": "https://www.commercialsearch.com",
+      "category_urls": [
+        "https://www.commercialsearch.com/news/category/development/",
+        "https://www.commercialsearch.com/news/category/healthcare/"
+      ],
+      "article_list_selector": "article.cs-post",
+      "article_url_selector": "h2.cs-post-title a",
+      "article_title_selector": "h2.cs-post-title",
+      "article_summary_selector": ".cs-post-excerpt",
+      "article_date_selector": ".cs-post-date",
+      "article_content_selector": ".cs-post-content",
+      "page_title_selector": "h1.cs-post-title",
+      "page_date_selector": ".cs-post-date",
+      "page_author_selector": ".cs-post-author a",
+      "page_category_selector": ".cs-post-categories a",
+      "content_remove_selectors": [".advertisement", ".wp-block-image"],
+      "crawl_delay": 3,
+      "max_articles": 10,
+      "fetch_content": true,
+      "construction_keywords": ["construction", "development", "project"],
+      "target_categories": ["healthcare", "commercial"]
+    },
+    {
+      "name": "building_design_construction",
+      "base_url": "https://www.bdcnetwork.com",
+      "category_urls": [
+        "https://www.bdcnetwork.com/building-types",
+        "https://www.bdcnetwork.com/building-team-news"
+      ],
+      "article_list_selector": ".views-row",
+      "article_url_selector": "h3 a",
+      "article_title_selector": "h3",
+      "article_date_selector": ".datetime",
+      "article_content_selector": ".field-body",
+      "page_title_selector": "h1",
+      "page_date_selector": ".datetime",
+      "page_author_selector": ".field-byline",
+      "page_category_selector": ".field-taxonomy-vocabulary-1 a",
+      "content_remove_selectors": [".advertisement", ".related-articles", ".ad-container"],
+      "crawl_delay": 4,
+      "max_articles": 10,
+      "fetch_content": true,
+      "construction_keywords": ["construction", "building", "architecture", "design"],
+      "target_categories": ["healthcare", "education", "commercial"]
+    }
+  ]
+}

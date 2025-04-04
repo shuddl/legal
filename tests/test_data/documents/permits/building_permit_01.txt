@@ -1,0 +1,37 @@
+CITY OF OAKRIDGE
+BUILDING PERMIT APPLICATION
+
+Permit #: BP-2023-1458
+Date: January 15, 2023
+Applicant: Westfield Construction Inc.
+Contact: John Peterson
+Phone: (555) 123-4567
+Email: john.peterson@westfieldconstruction.com
+
+Project Address: 1250 Maple Avenue, Oakridge, CA 94563
+APN: 048-256-033
+Project Description: New commercial building - Two-story retail space with office suites
+Estimated Cost: $3,750,000
+Project Timeline: Start: February 10, 2023, Completion: December 15, 2023
+
+Property Owner: Oakridge Commercial Properties LLC
+Owner Contact: Sarah Johnson
+Owner Phone: (555) 987-6543
+Owner Email: sjohnson@oakridgecommercial.com
+
+Contractor License: #BLD-589632
+Architect: Anderson & Partners Architecture
+Engineer: StructureTech Engineering
+
+Building Information:
+Square Footage: 24,500 sq ft
+Occupancy Type: Mixed Use (B - Business, M - Mercantile)
+Construction Type: Type II-B
+Zoning: C-2 Commercial
+Number of Stories: 2
+Sprinklered: Yes
+
+Approved By: Michael Thompson, Building Official
+Date: January 28, 2023
+
+Permit is valid for 180 days from date of issuance.

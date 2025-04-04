@@ -1,0 +1,74 @@
+{
+  "sources": [
+    {
+      "source_id": "permit-api",
+      "name": "Permit Data API",
+      "source_type": "legal",
+      "enabled": true,
+      "config": {
+        "source_type": "api",
+        "api_provider": "permit_data",
+        "document_type": "building",
+        "location": "San Francisco",
+        "days": 14,
+        "max_results": 50
+      },
+      "schedule": {
+        "frequency": "daily",
+        "time": "08:00"
+      }
+    },
+    {
+      "source_id": "local-permits",
+      "name": "Local Permit Documents",
+      "source_type": "legal",
+      "enabled": true,
+      "config": {
+        "source_type": "file",
+        "documents_path": "/path/to/local/permits",
+        "document_type": "permit"
+      },
+      "schedule": {
+        "frequency": "weekly",
+        "day": "monday",
+        "time": "07:00"
+      }
+    },
+    {
+      "source_id": "public-records-api",
+      "name": "Public Records API",
+      "source_type": "legal",
+      "enabled": true,
+      "config": {
+        "source_type": "api",
+        "api_provider": "public_records",
+        "document_type": "zoning",
+        "location": "Los Angeles",
+        "days": 30,
+        "max_results": 100
+      },
+      "schedule": {
+        "frequency": "daily",
+        "time": "09:00"
+      }
+    },
+    {
+      "source_id": "court-records-api",
+      "name": "Court Records API",
+      "source_type": "legal",
+      "enabled": true,
+      "config": {
+        "source_type": "api",
+        "api_provider": "court_records",
+        "document_type": "contract",
+        "location": "New York",
+        "days": 7,
+        "max_results": 25
+      },
+      "schedule": {
+        "frequency": "daily",
+        "time": "10:00"
+      }
+    }
+  ]
+}

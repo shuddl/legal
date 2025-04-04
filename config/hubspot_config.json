@@ -1,0 +1,104 @@
+{
+  "field_mappings": {
+    "contact": {
+      "name": "firstname",
+      "company": "company",
+      "email": "email",
+      "phone": "phone",
+      "title": "title"
+    },
+    "deal": {
+      "project_name": "dealname",
+      "description": "description",
+      "estimated_value": "amount",
+      "market_sector": "industry",
+      "lead_type": "deal_type",
+      "status": "dealstage",
+      "source": "lead_source"
+    }
+  },
+  "custom_properties": {
+    "contact": [
+      {
+        "name": "contact_role",
+        "label": "Contact Role",
+        "type": "string",
+        "group_name": "contactinformation"
+      }
+    ],
+    "deal": [
+      {
+        "name": "lead_source",
+        "label": "Lead Source",
+        "type": "string",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "source_url",
+        "label": "Source URL",
+        "type": "string",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "source_id",
+        "label": "Source ID",
+        "type": "string",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "lead_id",
+        "label": "Lead ID",
+        "type": "string",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "publication_date",
+        "label": "Publication Date",
+        "type": "date",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "retrieved_date",
+        "label": "Retrieved Date",
+        "type": "date",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "confidence_score",
+        "label": "Confidence Score",
+        "type": "number",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "location_city",
+        "label": "City",
+        "type": "string",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "location_state",
+        "label": "State",
+        "type": "string",
+        "group_name": "dealinformation"
+      },
+      {
+        "name": "estimated_square_footage",
+        "label": "Estimated Square Footage",
+        "type": "number",
+        "group_name": "dealinformation"
+      }
+    ]
+  },
+  "deal_stages": {
+    "new": "qualifiedtobuy",
+    "processing": "decisionmakerboughtin",
+    "validated": "contractsent",
+    "enriched": "closedwon",
+    "exported": "closedwon",
+    "archived": "closedlost",
+    "rejected": "closedlost"
+  },
+  "deal_pipeline": "default",
+  "retry_attempts": 3,
+  "rate_limit_wait": 10
+}

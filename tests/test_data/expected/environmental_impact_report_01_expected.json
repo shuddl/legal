@@ -1,0 +1,111 @@
+{
+  "document_id": "EIR-2023-0012",
+  "document_type": "environmental_impact_report",
+  "document_date": "2023-03-20",
+  "project_name": "Lakeside Mixed-Use Development",
+  "project_address": "250-300 Lakefront Drive, Lakeside, CA 96324",
+  "project_value": 78500000,
+  "property_ids": ["062-173-025", "062-173-026", "062-173-027"],
+  "construction_type": "mixed-use",
+  "construction_details": {
+    "site_area": 235224,
+    "site_area_acres": 5.4,
+    "buildings": 3,
+    "height_range": {
+      "min_stories": 4,
+      "max_stories": 6
+    },
+    "residential_units": 240,
+    "affordable_units": 36,
+    "retail_space": 25000,
+    "office_space": 12000,
+    "parking_spaces": 450,
+    "open_space": 52272,
+    "open_space_acres": 1.2
+  },
+  "project_timeline": {
+    "start_date": "2023-09-01",
+    "completion_date": "2025-12-31"
+  },
+  "lead_agency": {
+    "name": "City of Lakeside Planning Department",
+    "address": "400 City Center Drive, Lakeside, CA 96324",
+    "contact": {
+      "name": "Jennifer Reynolds",
+      "title": "Environmental Planning Manager",
+      "phone": "(555) 987-6543",
+      "email": "jreynolds@lakesideca.gov"
+    }
+  },
+  "applicant": {
+    "name": "Lakeside Partners Development LLC",
+    "address": "8800 Developer Way, Suite 500, Lakeside, CA 96320",
+    "contact": {
+      "name": "Christopher Garcia",
+      "title": "Managing Partner",
+      "phone": "(555) 123-7890",
+      "email": "cgarcia@lakesidepartners.com"
+    }
+  },
+  "environmental_impacts": [
+    {
+      "category": "Transportation and Circulation",
+      "impact": "Increased traffic at three key intersections",
+      "mitigations": [
+        "TRA-1: Traffic signal optimization at identified intersections",
+        "TRA-2: Contribution to transit improvement fund"
+      ],
+      "residual_impact": "Less than significant with mitigation"
+    },
+    {
+      "category": "Air Quality",
+      "impact": "Construction-related emissions exceeding regional thresholds",
+      "mitigations": [
+        "AQ-1: Tier 4 construction equipment requirements",
+        "AQ-2: Dust control measures"
+      ],
+      "residual_impact": "Less than significant with mitigation"
+    },
+    {
+      "category": "Noise",
+      "impact": "Construction noise impacts to adjacent residential properties",
+      "mitigations": [
+        "NOI-1: Limited construction hours",
+        "NOI-2: Noise barriers during construction"
+      ],
+      "residual_impact": "Less than significant with mitigation"
+    },
+    {
+      "category": "Cultural Resources",
+      "impact": "Potential impacts to archaeological resources during excavation",
+      "mitigations": [
+        "CUL-1: Archaeological monitoring during ground-disturbing activities",
+        "CUL-2: Treatment protocol for unanticipated discoveries"
+      ],
+      "residual_impact": "Less than significant with mitigation"
+    }
+  ],
+  "alternatives": [
+    "No Project Alternative",
+    "Reduced Density Alternative (180 residential units, 20,000 sf commercial)",
+    "Commercial-Only Alternative (no residential component)",
+    "Alternative Site Location"
+  ],
+  "superior_alternative": "Reduced Density Alternative",
+  "public_review": {
+    "start_date": "2022-12-15",
+    "end_date": "2023-02-01"
+  },
+  "public_hearings": [
+    {
+      "body": "Planning Commission",
+      "date": "2023-04-18"
+    },
+    {
+      "body": "City Council",
+      "date": "2023-05-09"
+    }
+  ],
+  "source_file": "environmental_impact_report_01.txt",
+  "extraction_confidence": 0.85
+}

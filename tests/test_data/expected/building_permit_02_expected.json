@@ -1,0 +1,42 @@
+{
+  "document_id": "RIV-2023-0472",
+  "document_type": "building_permit",
+  "project_name": "Industrial warehouse renovation and expansion",
+  "project_address": "850 Industrial Parkway, Riverdale, CA 92371",
+  "project_value": 2100000,
+  "property_id": "075-382-091",
+  "construction_type": "industrial",
+  "construction_details": {
+    "existing_square_footage": 28750,
+    "new_square_footage": 12500,
+    "total_square_footage": 41250,
+    "type": "II-B",
+    "stories": 1,
+    "use": "Manufacturing/Warehouse (F-1)",
+    "zoning": "M-1 Industrial"
+  },
+  "contractor": {
+    "name": "Horizon Industrial Construction",
+    "license": "874532",
+    "expiration": "2024-11-30",
+    "contact": {
+      "name": "Robert Chen",
+      "phone": "(555) 234-5678",
+      "email": "rchen@horizonindustrial.com"
+    }
+  },
+  "property_owner": {
+    "name": "Riverdale Business Park LP",
+    "contact": {
+      "name": "David Wilson",
+      "phone": "(555) 876-5432",
+      "email": "dwilson@rbpark.com"
+    }
+  },
+  "approval": {
+    "official": "Jennifer Martinez, Senior Building Inspector",
+    "conditions": "Work must commence within 180 days and completed within 18 months."
+  },
+  "source_file": "building_permit_02.txt",
+  "extraction_confidence": 0.92
+}

@@ -1,0 +1,119 @@
+{
+  "sources": [
+    {
+      "category": "General Commercial Construction",
+      "feeds": [
+        {
+          "name": "Construction Dive",
+          "url": "https://www.constructiondive.com/feeds/news/",
+          "format": "rss"
+        },
+        {
+          "name": "Engineering News-Record",
+          "url": "https://www.enr.com/rss/all-news",
+          "format": "rss"
+        },
+        {
+          "name": "Building Design + Construction",
+          "url": "https://www.bdcnetwork.com/rss.xml",
+          "format": "rss"
+        },
+        {
+          "name": "Construction Equipment",
+          "url": "https://www.constructionequipment.com/rss.xml",
+          "format": "rss"
+        }
+      ]
+    },
+    {
+      "category": "Healthcare",
+      "feeds": [
+        {
+          "name": "Healthcare Design Magazine",
+          "url": "https://healthcaredesignmagazine.com/feed/",
+          "format": "rss"
+        },
+        {
+          "name": "Healthcare Construction + Operations",
+          "url": "https://www.hconews.com/feed/",
+          "format": "rss"
+        },
+        {
+          "name": "Medical Construction & Design",
+          "url": "https://mcdmag.com/feed/",
+          "format": "rss"
+        }
+      ]
+    },
+    {
+      "category": "Higher Education",
+      "feeds": [
+        {
+          "name": "College Planning & Management",
+          "url": "https://spaces4learning.com/rss/cpm-all.aspx",
+          "format": "rss"
+        },
+        {
+          "name": "University Business",
+          "url": "https://universitybusiness.com/feed/",
+          "format": "rss"
+        }
+      ]
+    },
+    {
+      "category": "Energy/Utilities",
+      "feeds": [
+        {
+          "name": "Power Engineering",
+          "url": "https://www.power-eng.com/feed",
+          "format": "rss"
+        },
+        {
+          "name": "Utility Dive",
+          "url": "https://www.utilitydive.com/feeds/news/",
+          "format": "rss"
+        },
+        {
+          "name": "Renewable Energy World",
+          "url": "https://www.renewableenergyworld.com/feed/",
+          "format": "rss"
+        }
+      ]
+    },
+    {
+      "category": "Themed Entertainment",
+      "feeds": [
+        {
+          "name": "Blooloop",
+          "url": "https://blooloop.com/feed/",
+          "format": "rss"
+        },
+        {
+          "name": "InPark Magazine",
+          "url": "https://www.inparkmagazine.com/feed/",
+          "format": "rss"
+        }
+      ]
+    },
+    {
+      "category": "Southern California Specific",
+      "feeds": [
+        {
+          "name": "Los Angeles Business Journal",
+          "url": "https://labusinessjournal.com/feed/",
+          "format": "rss"
+        },
+        {
+          "name": "San Diego Business Journal",
+          "url": "https://www.sdbj.com/feed/",
+          "format": "rss"
+        },
+        {
+          "name": "Orange County Business Journal",
+          "url": "https://www.ocbj.com/feed/",
+          "format": "rss"
+        }
+      ]
+    }
+  ]
+}

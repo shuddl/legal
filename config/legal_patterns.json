@@ -1,0 +1,194 @@
+{
+  "type_indicators": {
+    "permit": [
+      "building permit",
+      "construction permit",
+      "permit application",
+      "permit no\\.?\\s*:?\\s*\\w",
+      "work description",
+      "property owner",
+      "certificate of occupancy"
+    ],
+    "contract": [
+      "construction contract",
+      "agreement between",
+      "this agreement",
+      "construction agreement",
+      "contract document",
+      "scope of work",
+      "parties agree",
+      "contract sum",
+      "payment schedule"
+    ],
+    "zoning": [
+      "zoning application",
+      "zoning permit",
+      "variance request",
+      "zoning board",
+      "special exception",
+      "rezoning request",
+      "land use approval",
+      "planning commission",
+      "conditional use permit"
+    ],
+    "regulatory": [
+      "environmental impact",
+      "regulatory approval",
+      "compliance with",
+      "stormwater permit",
+      "environmental assessment",
+      "wetland delineation",
+      "environmental review",
+      "impact statement",
+      "department of environmental"
+    ]
+  },
+  "permit": {
+    "permit_number": [
+      "permit\\s*#?\\s*(\\w+-?\\w*)",
+      "permit\\s*(?:no\\.?|number)\\s*:?\\s*(\\w+-?\\w*)",
+      "application\\s*(?:no\\.?|number)\\s*:?\\s*(\\w+-?\\w*)"
+    ],
+    "issue_date": [
+      "issued?\\s*(?:on|date)?\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "permit\\s*date\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "approved\\s*(?:on|date)?\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})"
+    ],
+    "property_address": [
+      "property\\s*address\\s*:?\\s*(.+?(?:\\n|$))",
+      "site\\s*address\\s*:?\\s*(.+?(?:\\n|$))",
+      "project\\s*location\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "work_description": [
+      "description\\s*of\\s*work\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "scope\\s*of\\s*work\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "proposed\\s*work\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))"
+    ],
+    "estimated_value": [
+      "(estimated\\s*cost|valuation|job\\s*value)\\s*:?\\s*[$]?\\s*(\\d[\\d,.]*)",
+      "project\\s*cost\\s*:?\\s*[$]?\\s*(\\d[\\d,.]*)",
+      "value\\s*of\\s*construction\\s*:?\\s*[$]?\\s*(\\d[\\d,.]*)"
+    ],
+    "contractor": [
+      "contractor\\s*:?\\s*(.+?(?:\\n|$))",
+      "contractor's\\s*name\\s*:?\\s*(.+?(?:\\n|$))",
+      "builder\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "property_owner": [
+      "property\\s*owner\\s*:?\\s*(.+?(?:\\n|$))",
+      "owner\\s*name\\s*:?\\s*(.+?(?:\\n|$))",
+      "owner\\s*of\\s*record\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "permit_type": [
+      "permit\\s*type\\s*:?\\s*(.+?(?:\\n|$))",
+      "type\\s*of\\s*permit\\s*:?\\s*(.+?(?:\\n|$))",
+      "application\\s*type\\s*:?\\s*(.+?(?:\\n|$))"
+    ]
+  },
+  "contract": {
+    "parties": [
+      "between\\s+(.+?)\\s+and\\s+(.+?)(?:\\s+dated|\\.|\"|$)",
+      "this\\s+agreement\\s+(?:made|entered)\\s+between\\s+(.+?)\\s+and\\s+(.+?)(?:\\s+on|\\.|\"|$)",
+      "agreement\\s+by\\s+and\\s+between\\s+(.+?)\\s+and\\s+(.+?)(?:\\s+for|\\.|\"|$)"
+    ],
+    "date": [
+      "dated\\s*(?:this)?\\s*(?:the)?\\s*(\\d{1,2}(?:st|nd|rd|th)?\\s+day\\s+of\\s+\\w+,?\\s+\\d{4}|\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "agreement\\s*date\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "executed\\s*on\\s*(?:this)?\\s*(\\d{1,2}(?:st|nd|rd|th)?\\s+day\\s+of\\s+\\w+,?\\s+\\d{4}|\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})"
+    ],
+    "amount": [
+      "(contract\\s*(?:sum|amount|price))\\s*(?:of|:)?\\s*[$]?\\s*(\\d[\\d,.]*)",
+      "total\\s*(?:contract\\s*)?(?:price|sum|amount)\\s*(?:of|:)?\\s*[$]?\\s*(\\d[\\d,.]*)",
+      "agreed\\s*(?:price|sum|amount)\\s*(?:of|:)?\\s*[$]?\\s*(\\d[\\d,.]*)"
+    ],
+    "project": [
+      "project\\s*name\\s*:?\\s*(.+?(?:\\n|$))",
+      "(?:for|regarding)\\s+the\\s+(.+?)\\s+project",
+      "project\\s*description\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "completion": [
+      "(?:substantial\\s*)?completion\\s*date\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "within\\s+(\\d+)\\s+(days|weeks|months)\\s+(?:of|from|after)",
+      "shall\\s+be\\s+completed\\s+by\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})"
+    ],
+    "payment_terms": [
+      "payment\\s*terms\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "payment\\s*schedule\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "method\\s*of\\s*payment\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))"
+    ]
+  },
+  "zoning": {
+    "case_number": [
+      "(?:case|application|file)\\s*(?:no\\.?|number|#)\\s*:?\\s*(\\w+-?\\w*)",
+      "zoning\\s*case\\s*(?:no\\.?|number|#)\\s*:?\\s*(\\w+-?\\w*)",
+      "reference\\s*(?:no\\.?|number|#)\\s*:?\\s*(\\w+-?\\w*)"
+    ],
+    "property_address": [
+      "(?:property|site)\\s*address\\s*:?\\s*(.+?(?:\\n|$))",
+      "location\\s*:?\\s*(.+?(?:\\n|$))",
+      "subject\\s*property\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "current_zoning": [
+      "current\\s*zoning\\s*:?\\s*([\\w-]+)",
+      "existing\\s*zoning\\s*:?\\s*([\\w-]+)",
+      "present\\s*zoning\\s*:?\\s*([\\w-]+)"
+    ],
+    "proposed_zoning": [
+      "proposed\\s*zoning\\s*:?\\s*([\\w-]+)",
+      "requested\\s*zoning\\s*:?\\s*([\\w-]+)",
+      "desired\\s*zoning\\s*:?\\s*([\\w-]+)"
+    ],
+    "applicant": [
+      "applicant\\s*:?\\s*(.+?(?:\\n|$))",
+      "applicant's\\s*name\\s*:?\\s*(.+?(?:\\n|$))",
+      "submitted\\s*by\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "request": [
+      "(?:request|description)\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "nature\\s*of\\s*request\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "proposed\\s*use\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))"
+    ],
+    "hearing_date": [
+      "hearing\\s*date\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "public\\s*hearing\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "meeting\\s*date\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})"
+    ]
+  },
+  "regulatory": {
+    "filing_number": [
+      "filing\\s*(?:no\\.?|number|#)\\s*:?\\s*(\\w+-?\\w*)",
+      "application\\s*(?:no\\.?|number|#)\\s*:?\\s*(\\w+-?\\w*)",
+      "permit\\s*(?:no\\.?|number|#)\\s*:?\\s*(\\w+-?\\w*)"
+    ],
+    "filing_date": [
+      "filed\\s*(?:on|date)\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "submission\\s*date\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})",
+      "date\\s*(?:of|:)\\s*application\\s*:?\\s*(\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4})"
+    ],
+    "project_name": [
+      "project\\s*(?:name|title)\\s*:?\\s*(.+?(?:\\n|$))",
+      "name\\s*of\\s*project\\s*:?\\s*(.+?(?:\\n|$))",
+      "development\\s*name\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "applicant": [
+      "(?:applicant|proponent|submitted by)\\s*:?\\s*(.+?(?:\\n|$))",
+      "applicant's\\s*name\\s*:?\\s*(.+?(?:\\n|$))",
+      "prepared\\s*by\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "authority": [
+      "(?:submitted to|authority)\\s*:?\\s*(.+?(?:\\n|$))",
+      "regulatory\\s*agency\\s*:?\\s*(.+?(?:\\n|$))",
+      "reviewing\\s*body\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "filing_type": [
+      "type\\s*of\\s*(?:application|filing)\\s*:?\\s*(.+?(?:\\n|$))",
+      "application\\s*type\\s*:?\\s*(.+?(?:\\n|$))",
+      "permit\\s*type\\s*:?\\s*(.+?(?:\\n|$))"
+    ],
+    "project_description": [
+      "project\\s*description\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "description\\s*of\\s*(?:project|development)\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))",
+      "proposed\\s*action\\s*:?\\s*(.+?(?:\\n\\s*\\n|$))"
+    ]
+  }
+}
