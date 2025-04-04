@@ -203,6 +203,19 @@ class AppConfig:
 
         return errors
 
+    def get(self, key: str, default_value: Any = None) -> Any:
+        """
+        Get a configuration value.
+        
+        Args:
+            key: Configuration key
+            default_value: Default value if the key doesn't exist
+            
+        Returns:
+            Configuration value or default
+        """
+        return os.getenv(key, default_value)
+    
     def load_source_config(self, path: Path) -> Dict[str, Any]:
         """
         Load a JSON configuration file.
