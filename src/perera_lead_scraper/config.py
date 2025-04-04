@@ -108,6 +108,32 @@ class AppConfig:
             os.getenv("HUBSPOT_CONFIG_PATH", str(DEFAULT_HUBSPOT_CONFIG_PATH))
         )
     )
+    
+    # HubSpot property IDs
+    hubspot_property_ids: Dict[str, str] = field(default_factory=lambda: {
+        # Custom properties for deals
+        "lead_source": os.getenv("HUBSPOT_PROP_LEAD_SOURCE", ""),
+        "source_url": os.getenv("HUBSPOT_PROP_SOURCE_URL", ""),
+        "source_id": os.getenv("HUBSPOT_PROP_SOURCE_ID", ""),
+        "lead_id": os.getenv("HUBSPOT_PROP_LEAD_ID", ""),
+        "publication_date": os.getenv("HUBSPOT_PROP_PUBLICATION_DATE", ""),
+        "retrieved_date": os.getenv("HUBSPOT_PROP_RETRIEVED_DATE", ""),
+        "confidence_score": os.getenv("HUBSPOT_PROP_CONFIDENCE_SCORE", ""),
+        "location_city": os.getenv("HUBSPOT_PROP_LOCATION_CITY", ""),
+        "location_state": os.getenv("HUBSPOT_PROP_LOCATION_STATE", ""),
+        "estimated_square_footage": os.getenv("HUBSPOT_PROP_EST_SQ_FOOTAGE", ""),
+    })
+    
+    # HubSpot deal stage IDs
+    hubspot_dealstage_ids: Dict[str, str] = field(default_factory=lambda: {
+        "new": os.getenv("HUBSPOT_STAGE_NEW", ""),
+        "processing": os.getenv("HUBSPOT_STAGE_PROCESSING", ""),
+        "validated": os.getenv("HUBSPOT_STAGE_VALIDATED", ""),
+        "enriched": os.getenv("HUBSPOT_STAGE_ENRICHED", ""),
+        "exported": os.getenv("HUBSPOT_STAGE_EXPORTED", ""),
+        "archived": os.getenv("HUBSPOT_STAGE_ARCHIVED", ""),
+        "rejected": os.getenv("HUBSPOT_STAGE_REJECTED", ""),
+    })
 
     # Proxy configuration
     use_proxies: bool = field(
@@ -126,6 +152,20 @@ class AppConfig:
     # Debug options
     debug_mode: bool = field(
         default_factory=lambda: os.getenv("DEBUG_MODE", "false").lower() == "true"
+    )
+    
+    # Export scheduler configuration
+    export_interval_minutes: int = field(
+        default_factory=lambda: int(os.getenv("EXPORT_INTERVAL_MINUTES", "60"))
+    )
+    export_batch_size: int = field(
+        default_factory=lambda: int(os.getenv("EXPORT_BATCH_SIZE", "25"))
+    )
+    export_window_start_hour: Optional[int] = field(
+        default_factory=lambda: int(os.getenv("EXPORT_WINDOW_START_HOUR")) if os.getenv("EXPORT_WINDOW_START_HOUR") else None
+    )
+    export_window_end_hour: Optional[int] = field(
+        default_factory=lambda: int(os.getenv("EXPORT_WINDOW_END_HOUR")) if os.getenv("EXPORT_WINDOW_END_HOUR") else None
     )
 
     def validate(self) -> List[str]:

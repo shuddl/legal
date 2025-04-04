@@ -82,7 +82,9 @@ Adhere strictly to the following:
 - Use Pull Requests for code review (if applicable).
 
 ## Important Reminders
-- **Focus:** Address the specific requirements of the current prompt/task. 
+
+- **Focus:** Address the specific requirements of the current prompt/task.
 - **Ask Questions:** If requirements are unclear, ask for clarification before proceeding.
+
 ```
 

@@ -1,245 +1,160 @@
 # Perera Construction Lead Scraper
 
-A specialized tool for automatically gathering, processing, and managing construction project leads from various sources including city permit databases, industry websites, RSS feeds, and more.
+A comprehensive system for automatically scraping, processing, and exporting construction project leads from various online sources.
+
+![Perera Lead Scraper](docs/images/perera_lead_scraper_logo.png)
 
 ## Overview
 
-The Perera Construction Lead Scraper is designed to automate the process of finding new construction project opportunities in target markets. It can scrape data from:
-
-- RSS feeds from construction industry news sources
-- City planning portals and permit databases
-- Construction industry news websites
-- Legal document APIs (building permits, contracts, zoning applications)
-- Local legal document files
-- Other industry-specific data sources
-
-The system processes the raw data, standardizes it into a consistent lead format, enriches it with additional information, and can export it to HubSpot CRM or CSV/JSON files.
+The Perera Construction Lead Scraper is a specialized tool designed to help construction companies discover and process new business opportunities. It automatically scrapes construction leads from multiple sources, processes them to extract relevant information, evaluates lead quality, and exports them to your CRM or other business systems.
 
 ## Key Features
 
-- **Multi-source data collection**: RSS feeds, websites, city portals, APIs, legal documents
-- **Intelligent filtering**: Market sector identification, duplicate detection
-- **Location-based targeting**: Focus on specific geographic regions
-- **Legal document processing**: Extract leads from permits, contracts, zoning applications
-- **Lead enrichment**: Estimate project values, extract contacts
-- **NLP processing**: Extract entities, classify documents, analyze sentiment
-- **CRM integration**: Direct sync with HubSpot
-- **Comprehensive logging**: Detailed activity tracking
-- **Configurable scheduling**: Automated data collection
+- **Multi-source Lead Generation**: Scrapes construction leads from various websites, public records, and bid platforms
+- **Intelligent Processing**: Uses AI to extract project details, budgets, timelines, and contact information
+- **Quality Scoring**: Automatically scores and prioritizes leads based on configurable criteria
+- **CRM Integration**: Seamless export to HubSpot and other CRM systems
+- **Customizable Filters**: Target specific regions, project types, and value ranges
+- **Comprehensive Monitoring**: Built-in monitoring and reliability testing
+- **RESTful API**: Full-featured API for integration with other systems
+- **Docker Support**: Easy deployment using Docker and Docker Compose
 
-## Installation
+## System Requirements
 
-### Prerequisites
+### Standalone Deployment
+- Python 3.9+
+- 2GB RAM (4GB recommended)
+- 10GB disk space
+- Internet connectivity
 
-- Python 3.9 or later
-- pip (Python package installer)
-- Git
+### Docker Deployment
+- Docker and Docker Compose
+- 2GB RAM (4GB recommended)
+- 10GB disk space
+- Internet connectivity
 
-### Installation Steps
+## Quick Start
+
+### Docker Installation (Recommended)
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/pereraconstruction/lead-scraper.git
+   git clone https://github.com/perera-construction/lead-scraper.git
    cd lead-scraper
    ```
 
-2. Set up a virtual environment:
+2. Create a `.env` file with your configuration:
+   ```
+   API_KEY=your_secure_api_key
+   HUBSPOT_API_KEY=your_hubspot_api_key
+   API_PORT=8000
+   ```
+
+3. Start the application:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. Verify it's running:
+   ```bash
+   curl http://localhost:8000/api/health
+   ```
+
+5. Access the API documentation:
+   ```
+   http://localhost:8000/docs
+   ```
+
+### Standard Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/perera-construction/lead-scraper.git
+   cd lead-scraper
+   ```
+
+2. Create a virtual environment:
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install the package and dependencies:
+3. Install dependencies:
    ```bash
-   pip install -e ".[dev]"
+   pip install -r requirements.txt
    ```
 
-4. Install browser drivers for Playwright:
+4. Set up environment variables:
    ```bash
-   playwright install
+   export API_KEY=your_secure_api_key
+   export HUBSPOT_API_KEY=your_hubspot_api_key
    ```
 
-5. Create and configure your environment variables:
+5. Run the application:
    ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
+   python -m src.perera_lead_scraper.api.api
    ```
 
-## Configuration
-
-Configuration is managed through environment variables (ideally in a `.env` file) and JSON configuration files in the `config/` directory.
-
-### Environment Variables
-
-Key variables to configure:
-
-- `HUBSPOT_API_KEY`: Your HubSpot API key (required for CRM integration)
-- `LOG_LEVEL`: Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-- `SCRAPE_INTERVAL_HOURS`: How often to run the scraper (defaults to 24)
-- `MAX_LEADS_PER_RUN`: Maximum number of leads to process per run
-- `EXPORT_TO_HUBSPOT`: Whether to export leads to HubSpot (true/false)
-- `LOG_FILE_PATH`: Path to the log file
-
-See `.env.example` for a complete list of configuration options.
-
-### Source Configuration
-
-- `config/sources.json`: Main source registry
-- `config/rss_sources.json`: RSS feed configurations
-- `config/city_portals.json`: City planning portal configurations
-- `config/news_sources.json`: News website configurations
-- `config/legal_api_credentials.json`: Legal API authentication credentials
-- `config/legal_patterns.json`: Regular expression patterns for legal document parsing
-- `config/legal_validation_rules.json`: Validation rules for legal documents
-- `config/hubspot_config.json`: HubSpot integration configuration
-
-See the `config/` directory for example configuration files.
-
-## Usage
+## Basic Usage
 
 ### Command Line Interface
 
-The scraper can be run from the command line with various options:
-
+Generate leads from all configured sources:
 ```bash
-# Run all scrapers
-lead-scraper run
-
-# Run specific source
-lead-scraper run --source construction_dive
-
-# Run only RSS sources
-lead-scraper run --source-type rss
-
-# Check source availability
-lead-scraper test-sources
-
-# Export leads to CSV
-lead-scraper export --format csv --output leads.csv
-
-# Sync validated leads to HubSpot
-lead-scraper sync-hubspot
-
-# View application status
-lead-scraper status
-
-# List configured sources
-lead-scraper list-sources
+python -m src.perera_lead_scraper.cli generate
 ```
 
-### Scheduled Execution
-
-For regular execution, set up a cron job or scheduled task:
-
+Export leads to CSV:
 ```bash
-# Run the scraper daily at 3 AM
-0 3 * * * cd /path/to/lead-scraper && /path/to/venv/bin/lead-scraper run >> /path/to/cron.log 2>&1
+python -m src.perera_lead_scraper.cli export --format csv --output leads.csv
 ```
 
-## Development
-
-### Project Structure
-
-```
-lead-scraper/
-├── config/                 # Configuration files
-├── data/                   # Data storage
-├── logs/                   # Log files
-├── scripts/                # Utility scripts
-├── src/                    # Source code
-│   └── perera_lead_scraper/
-│       ├── scrapers/       # Data source scrapers
-│       ├── processors/     # Data processing logic
-│       ├── pipeline/       # Lead extraction pipeline
-│       ├── integrations/   # External system integrations
-│       ├── legal/          # Legal document processing
-│       │   ├── legal_api.py           # Legal API client
-│       │   ├── legal_processor.py     # Legal document processor
-│       │   ├── document_parser.py     # Document parsing utilities
-│       │   └── document_validator.py  # Document validation utilities
-│       ├── nlp/           # Natural language processing
-│       ├── validation/    # Lead validation
-│       ├── utils/          # Utility functions
-│       ├── models/         # Data models
-│       ├── config.py       # Configuration management
-│       └── main.py         # Main entry point
-├── tests/                  # Test suite
-│   ├── unit/               # Unit tests
-│   ├── integration/        # Integration tests
-│   └── test_data/          # Test data files
-├── .env.example            # Example environment variables
-├── pyproject.toml          # Python project configuration
-├── setup.py                # Package setup
-└── README.md               # This file
-```
-
-### Development Commands
-
+Run a specific data source:
 ```bash
-# Install development dependencies
-pip install -e ".[dev]"
-
-# Run tests
-pytest
-
-# Run tests with coverage
-pytest --cov=src
-
-# Format code
-black src tests
-
-# Check code style
-ruff src tests
-
-# Type checking
-mypy src
+python -m src.perera_lead_scraper.cli run-source --source-id SOURCE_ID
 ```
 
-## Testing
+### API
 
-The test suite is organized into unit tests and integration tests:
-
+Generate leads:
 ```bash
-# Run all tests
-pytest
-
-# Run only unit tests
-pytest tests/unit/
-
-# Run only integration tests
-pytest tests/integration/
-
-# Run tests with verbose output
-pytest -v
+curl -X POST http://localhost:8000/api/triggers/generate \
+  -H "X-API-Key: your_api_key"
 ```
+
+Get all leads:
+```bash
+curl -X GET http://localhost:8000/api/leads \
+  -H "X-API-Key: your_api_key"
+```
+
+Export leads:
+```bash
+curl -X POST http://localhost:8000/api/export \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your_api_key" \
+  -d '{"format": "csv", "filter": {"min_quality": 60}}'
+```
+
+## Documentation
+
+- [Architecture](ARCHITECTURE.md) - System design and component overview
+- [Deployment](DEPLOYMENT.md) - Detailed deployment instructions
+- [API Documentation](API_DOCS.md) - API reference with examples
+- [Configuration](CONFIGURATION.md) - Configuration options and formats
+- [Customization](CUSTOMIZATION.md) - Extending and customizing the system
+- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
+- [Maintenance](MAINTENANCE.md) - Routine maintenance procedures
+- [Monitoring](MONITORING.md) - System monitoring and alerting
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgements
+## Contributing
 
-- This project uses the HubSpot API for CRM integration
-- Browser automation is powered by Playwright
-- Web scraping components use Scrapy and BeautifulSoup
-- Document parsing is performed using PyPDF2, pdfplumber, and python-docx
-- NLP processing uses spaCy for entity extraction and classification
-
-## Legal Document API Integration
-
-This project includes a module for integrating with various legal document APIs to extract construction-related leads from:
-
-- Building permits
-- Construction contracts
-- Zoning applications
-- Regulatory filings
-- Court records
-
-To use the legal API features:
-
-1. Copy `config/legal_api_credentials_example.json` to `config/legal_api_credentials.json`
-2. Update the file with your API provider credentials
-3. Configure sources in `config/sources.json` to use the legal API providers
-4. Run the scraper with `lead-scraper run --source-type legal`
-
-For more details on the API integration, see the documentation in `/docs/legal_api_integration.md`.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request

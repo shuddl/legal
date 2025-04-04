@@ -68,16 +68,26 @@ class ExtractionTester:
     
     def __init__(
         self,
+        legal_processor=None,
+        lead_validator=None,
+        extraction_pipeline=None,
         config_path: str = None,
         test_data_dir: str = None,
-        output_dir: str = None
+        output_dir: str = None,
+        generate_visualizations: bool = True,
+        save_failed_documents: bool = True
     ):
         """Initialize the extraction tester.
         
         Args:
+            legal_processor: Optional LegalProcessor instance.
+            lead_validator: Optional LeadValidator instance.
+            extraction_pipeline: Optional LeadExtractionPipeline instance.
             config_path: Path to config file. If None, default config is used.
             test_data_dir: Path to test data directory. If None, default is used.
             output_dir: Path to output directory. If None, default is used.
+            generate_visualizations: Whether to generate performance visualizations.
+            save_failed_documents: Whether to save copies of documents that failed extraction.
         """
         # Initialize configuration
         self.config = Config(config_path) if config_path else Config()
@@ -89,10 +99,24 @@ class ExtractionTester:
         # Create output directory if it doesn't exist
         os.makedirs(self.output_dir, exist_ok=True)
         
-        # Initialize components
-        self.pipeline = LeadExtractionPipeline(self.config)
-        self.validator = LeadValidator(self.config)
+        # Initialize options
+        self.generate_visualizations = generate_visualizations
+        self.save_failed_documents = save_failed_documents
+        
+        # Initialize components (use provided instances or create new ones)
+        self.pipeline = extraction_pipeline or LeadExtractionPipeline(self.config)
+        self.validator = lead_validator or LeadValidator(self.config)
         self.nlp_processor = NLPProcessor(self.config)
+        self.legal_processor = legal_processor
+        
+        # Track memory usage if psutil is available
+        self.enable_memory_tracking = False
+        try:
+            import psutil
+            self.enable_memory_tracking = True
+            self.process = psutil.Process(os.getpid())
+        except ImportError:
+            logger.warning("psutil not available. Memory tracking disabled.")
         
         # Initialize test data
         self.ground_truth = {}
@@ -1441,6 +1465,734 @@ class ExtractionTester:
             writer.writerow(['Component', 'Metric', 'Value'])
             for row in metrics:
                 writer.writerow(row)
+    
+    def test_document_extraction(self, 
+                          document_paths: List[str], 
+                          expected_results: List[Dict[str, Any]],
+                          document_type: str = None,
+                          thresholds: Dict[str, float] = None) -> Dict[str, Any]:
+        """Test the extraction of leads from legal documents.
+        
+        Args:
+            document_paths: List of paths to test documents
+            expected_results: List of expected extraction results
+            document_type: Optional document type hint
+            thresholds: Optional thresholds for precision, recall, and F1 score
+                      
+        Returns:
+            Dictionary with extraction performance metrics
+        """
+        if not self.legal_processor:
+            logger.error("LegalProcessor not initialized. Cannot test document extraction.")
+            return {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1_score": 0.0,
+                "error": "LegalProcessor not initialized"
+            }
+            
+        if not thresholds:
+            thresholds = {
+                "precision": 0.8,
+                "recall": 0.8,
+                "f1_score": 0.8
+            }
+            
+        logger.info(f"Testing document extraction for {len(document_paths)} documents")
+        start_time = time.time()
+        
+        results = {
+            "document_paths": document_paths,
+            "document_type": document_type,
+            "thresholds": thresholds,
+            "extraction_results": [],
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1_score": 0.0,
+            "performance": {
+                "total_time": 0.0,
+                "avg_document_time": 0.0
+            },
+            "errors": [],
+            "false_positives": [],
+            "false_negatives": [],
+            "details": {
+                "field_accuracy": {},
+                "entity_extraction": {},
+                "error_patterns": {}
+            }
+        }
+        
+        # Track memory usage if enabled
+        if self.enable_memory_tracking:
+            results["performance"]["memory_before"] = self.process.memory_info().rss / 1024 / 1024  # MB
+        
+        # Process each document
+        extracted_data = []
+        document_times = []
+        
+        for i, doc_path in enumerate(document_paths):
+            try:
+                # Process document
+                doc_start_time = time.time()
+                
+                # Read document
+                with open(doc_path, 'r', encoding='utf-8') as f:
+                    document_text = f.read()
+                
+                # Process through legal processor
+                processed_doc = self.legal_processor.process_document(document_text, document_type)
+                
+                # Track processing time
+                doc_time = time.time() - doc_start_time
+                document_times.append(doc_time)
+                
+                # Store results
+                extracted_data.append({
+                    "document_path": doc_path,
+                    "processing_time": doc_time,
+                    "extracted_data": processed_doc
+                })
+                
+                logger.info(f"Processed document {i+1}/{len(document_paths)}: {Path(doc_path).name} in {doc_time:.2f}s")
+                
+            except Exception as e:
+                logger.error(f"Error processing document {doc_path}: {e}")
+                results["errors"].append({
+                    "document_path": doc_path,
+                    "error": str(e)
+                })
+                
+                # Save failed document if enabled
+                if self.save_failed_documents:
+                    failed_dir = self.output_dir / "failed_documents"
+                    os.makedirs(failed_dir, exist_ok=True)
+                    try:
+                        import shutil
+                        shutil.copy(doc_path, failed_dir / Path(doc_path).name)
+                    except Exception as copy_error:
+                        logger.error(f"Failed to save failed document: {copy_error}")
+        
+        # Calculate extraction metrics
+        if extracted_data and expected_results:
+            # Match extracted data with expected results
+            matches = []
+            
+            for expected in expected_results:
+                best_match = None
+                best_match_score = 0
+                
+                for extracted in extracted_data:
+                    match_score = self._calculate_extraction_match(
+                        extracted["extracted_data"], 
+                        expected
+                    )
+                    
+                    if match_score > best_match_score:
+                        best_match = extracted
+                        best_match_score = match_score
+                
+                if best_match and best_match_score > 0.5:  # Consider it a match if score > 0.5
+                    matches.append({
+                        "expected": expected,
+                        "extracted": best_match,
+                        "match_score": best_match_score
+                    })
+                else:
+                    # False negative - expected but not extracted
+                    results["false_negatives"].append({
+                        "expected": expected,
+                        "best_match_score": best_match_score if best_match else 0.0
+                    })
+            
+            # Calculate precision and recall
+            if matches:
+                # Precision = correctly extracted / all extracted
+                precision = len(matches) / len(extracted_data) if extracted_data else 0
+                
+                # Recall = correctly extracted / all expected
+                recall = len(matches) / len(expected_results) if expected_results else 0
+                
+                # F1 score
+                f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
+                
+                # Update results
+                results["precision"] = precision
+                results["recall"] = recall
+                results["f1_score"] = f1
+                
+                # Calculate field-level accuracy
+                field_accuracy = self._calculate_field_accuracy(matches)
+                results["details"]["field_accuracy"] = field_accuracy
+                
+                # Track entity extraction accuracy
+                entity_accuracy = self._calculate_entity_accuracy(matches)
+                results["details"]["entity_extraction"] = entity_accuracy
+                
+                # Identify error patterns
+                error_patterns = self._analyze_error_patterns(
+                    matches, results["false_positives"], results["false_negatives"]
+                )
+                results["details"]["error_patterns"] = error_patterns
+                
+                logger.info(
+                    f"Extraction metrics: Precision={precision:.4f}, Recall={recall:.4f}, F1={f1:.4f}"
+                )
+                
+                # Check against thresholds
+                if precision < thresholds.get("precision", 0.8):
+                    logger.warning(f"Precision {precision:.4f} below threshold {thresholds.get('precision', 0.8)}")
+                
+                if recall < thresholds.get("recall", 0.8):
+                    logger.warning(f"Recall {recall:.4f} below threshold {thresholds.get('recall', 0.8)}")
+                
+                if f1 < thresholds.get("f1_score", 0.8):
+                    logger.warning(f"F1 score {f1:.4f} below threshold {thresholds.get('f1_score', 0.8)}")
+            
+            # Store extraction results
+            results["extraction_results"] = matches
+        
+        # Performance metrics
+        results["performance"]["total_time"] = time.time() - start_time
+        results["performance"]["avg_document_time"] = sum(document_times) / len(document_times) if document_times else 0
+        
+        # Memory usage
+        if self.enable_memory_tracking:
+            results["performance"]["memory_after"] = self.process.memory_info().rss / 1024 / 1024  # MB
+            results["performance"]["memory_used"] = results["performance"]["memory_after"] - results["performance"]["memory_before"]
+        
+        # Generate precision-recall curve if multiple confidence thresholds
+        if len(extracted_data) >= 5 and self.generate_visualizations:
+            try:
+                self._generate_precision_recall_curve(extracted_data, expected_results)
+                logger.info("Generated precision-recall curve")
+            except Exception as e:
+                logger.error(f"Failed to generate precision-recall curve: {e}")
+        
+        # Save detailed results
+        details_path = self.output_dir / f"extraction_details_{document_type}.json"
+        with open(details_path, 'w') as f:
+            json.dump(results, f, indent=2)
+        
+        return results
+    
+    def _calculate_extraction_match(self, extracted: Dict[str, Any], expected: Dict[str, Any]) -> float:
+        """Calculate how well an extracted result matches expected data.
+        
+        Args:
+            extracted: Extracted data
+            expected: Expected data
+            
+        Returns:
+            Match score between 0 and 1
+        """
+        # Get set of all keys
+        all_keys = set(extracted.keys()) | set(expected.keys())
+        
+        # Priority fields that are more important for matching
+        priority_fields = {
+            "document_id": 3.0,
+            "project_name": 2.0,
+            "project_address": 2.0,
+            "project_value": 1.5,
+            "contractor": 1.5,
+            "construction_type": 1.5
+        }
+        
+        # Count matches, weighted by priority
+        total_weight = 0
+        matched_weight = 0
+        
+        for key in all_keys:
+            # Skip complex nested objects for basic matching
+            if key in ["construction_details", "contractor", "property_owner", 
+                     "professionals", "approval", "extraction_confidence"]:
+                continue
+                
+            # Get field weight
+            weight = priority_fields.get(key, 1.0)
+            total_weight += weight
+            
+            # Check for match
+            if key in extracted and key in expected:
+                # Convert values to strings for comparison
+                extracted_val = str(extracted[key]).lower()
+                expected_val = str(expected[key]).lower()
+                
+                # Calculate field similarity
+                if extracted_val == expected_val:
+                    matched_weight += weight
+                elif expected_val in extracted_val or extracted_val in expected_val:
+                    matched_weight += weight * 0.75
+                else:
+                    # Calculate string similarity
+                    similarity = difflib.SequenceMatcher(None, extracted_val, expected_val).ratio()
+                    matched_weight += weight * similarity
+        
+        # Calculate overall match score
+        match_score = matched_weight / total_weight if total_weight > 0 else 0
+        return match_score
+    
+    def _calculate_field_accuracy(self, matches: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Calculate accuracy for each field across all matched documents.
+        
+        Args:
+            matches: List of matched document pairs
+            
+        Returns:
+            Dictionary with field accuracy metrics
+        """
+        field_stats = defaultdict(lambda: {"correct": 0, "total": 0, "accuracy": 0.0})
+        
+        for match in matches:
+            expected = match["expected"]
+            extracted = match["extracted"]["extracted_data"]
+            
+            # Check each field in expected data
+            for field, expected_value in expected.items():
+                # Skip special fields
+                if field in ["source_file", "extraction_confidence"] or not expected_value:
+                    continue
+                
+                field_stats[field]["total"] += 1
+                
+                # Check if field exists and matches in extracted data
+                if field in extracted:
+                    extracted_value = extracted[field]
+                    
+                    # Compare values (with special handling for some types)
+                    if isinstance(expected_value, (dict, list)):
+                        # For complex types, just check presence for now
+                        if extracted_value:
+                            field_stats[field]["correct"] += 0.5  # Partial credit
+                    elif field == "project_value":
+                        # For monetary values, allow 10% margin
+                        try:
+                            if isinstance(extracted_value, (int, float)) and isinstance(expected_value, (int, float)):
+                                if abs(extracted_value - expected_value) / expected_value <= 0.1:
+                                    field_stats[field]["correct"] += 1
+                        except:
+                            pass
+                    else:
+                        # For strings and other types, check similarity
+                        if isinstance(extracted_value, str) and isinstance(expected_value, str):
+                            if expected_value.lower() in extracted_value.lower() or extracted_value.lower() in expected_value.lower():
+                                field_stats[field]["correct"] += 1
+                            else:
+                                similarity = difflib.SequenceMatcher(None, str(extracted_value).lower(), str(expected_value).lower()).ratio()
+                                if similarity >= 0.8:
+                                    field_stats[field]["correct"] += 1
+                        elif extracted_value == expected_value:
+                            field_stats[field]["correct"] += 1
+        
+        # Calculate accuracy for each field
+        results = {}
+        for field, stats in field_stats.items():
+            accuracy = stats["correct"] / stats["total"] if stats["total"] > 0 else 0
+            results[field] = {
+                "accuracy": accuracy,
+                "correct": stats["correct"],
+                "total": stats["total"]
+            }
+        
+        return results
+    
+    def _calculate_entity_accuracy(self, matches: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Calculate accuracy for entity extraction.
+        
+        Args:
+            matches: List of matched document pairs
+            
+        Returns:
+            Dictionary with entity extraction accuracy metrics
+        """
+        entity_stats = {
+            "organization": {"true_pos": 0, "false_pos": 0, "false_neg": 0},
+            "location": {"true_pos": 0, "false_pos": 0, "false_neg": 0},
+            "person": {"true_pos": 0, "false_pos": 0, "false_neg": 0},
+            "money": {"true_pos": 0, "false_pos": 0, "false_neg": 0},
+            "date": {"true_pos": 0, "false_pos": 0, "false_neg": 0}
+        }
+        
+        for match in matches:
+            expected = match["expected"]
+            extracted = match["extracted"]["extracted_data"]
+            
+            # Organization entities
+            expected_orgs = []
+            if "contractor" in expected and isinstance(expected["contractor"], dict) and "name" in expected["contractor"]:
+                expected_orgs.append(expected["contractor"]["name"])
+            if "property_owner" in expected and isinstance(expected["property_owner"], dict) and "name" in expected["property_owner"]:
+                expected_orgs.append(expected["property_owner"]["name"])
+            if "professionals" in expected and isinstance(expected["professionals"], dict):
+                expected_orgs.extend(expected["professionals"].values())
+            
+            # Extracted organizations
+            extracted_orgs = []
+            if "entities" in extracted and "organizations" in extracted["entities"]:
+                extracted_orgs = extracted["entities"]["organizations"]
+            
+            # Count matches for organizations
+            for org in expected_orgs:
+                matched = False
+                for ext_org in extracted_orgs:
+                    if org.lower() in ext_org.lower() or ext_org.lower() in org.lower():
+                        matched = True
+                        entity_stats["organization"]["true_pos"] += 1
+                        break
+                if not matched:
+                    entity_stats["organization"]["false_neg"] += 1
+            
+            # Count false positives for organizations
+            for ext_org in extracted_orgs:
+                matched = False
+                for org in expected_orgs:
+                    if org.lower() in ext_org.lower() or ext_org.lower() in org.lower():
+                        matched = True
+                        break
+                if not matched:
+                    entity_stats["organization"]["false_pos"] += 1
+            
+            # Location entities
+            expected_locs = []
+            if "project_address" in expected:
+                expected_locs.append(expected["project_address"])
+            
+            # Extracted locations
+            extracted_locs = []
+            if "entities" in extracted and "locations" in extracted["entities"]:
+                extracted_locs = extracted["entities"]["locations"]
+            
+            # Count matches for locations
+            for loc in expected_locs:
+                matched = False
+                for ext_loc in extracted_locs:
+                    if loc.lower() in ext_loc.lower() or ext_loc.lower() in loc.lower():
+                        matched = True
+                        entity_stats["location"]["true_pos"] += 1
+                        break
+                if not matched:
+                    entity_stats["location"]["false_neg"] += 1
+            
+            # Count false positives for locations
+            for ext_loc in extracted_locs:
+                matched = False
+                for loc in expected_locs:
+                    if loc.lower() in ext_loc.lower() or ext_loc.lower() in loc.lower():
+                        matched = True
+                        break
+                if not matched:
+                    entity_stats["location"]["false_pos"] += 1
+        
+        # Calculate precision, recall, F1 for each entity type
+        results = {}
+        for entity_type, stats in entity_stats.items():
+            true_pos = stats["true_pos"]
+            false_pos = stats["false_pos"]
+            false_neg = stats["false_neg"]
+            
+            precision = true_pos / (true_pos + false_pos) if true_pos + false_pos > 0 else 0
+            recall = true_pos / (true_pos + false_neg) if true_pos + false_neg > 0 else 0
+            f1 = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0
+            
+            results[entity_type] = {
+                "precision": precision,
+                "recall": recall,
+                "f1": f1,
+                "counts": {
+                    "true_pos": true_pos,
+                    "false_pos": false_pos,
+                    "false_neg": false_neg
+                }
+            }
+        
+        return results
+    
+    def _analyze_error_patterns(self, matches: List[Dict[str, Any]], 
+                              false_positives: List[Dict[str, Any]], 
+                              false_negatives: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Analyze error patterns in extraction results.
+        
+        Args:
+            matches: List of matched document pairs
+            false_positives: List of false positive extractions
+            false_negatives: List of false negative extractions
+            
+        Returns:
+            Dictionary with error pattern analysis
+        """
+        error_patterns = {
+            "common_field_errors": [],
+            "entity_extraction_issues": [],
+            "missing_fields": defaultdict(int),
+            "incorrect_fields": defaultdict(int)
+        }
+        
+        # Analyze field errors in matched documents
+        for match in matches:
+            expected = match["expected"]
+            extracted = match["extracted"]["extracted_data"]
+            
+            # Check each field in expected data
+            for field, expected_value in expected.items():
+                # Skip special fields
+                if field in ["source_file", "extraction_confidence"] or not expected_value:
+                    continue
+                
+                # Check if field exists in extracted data
+                if field not in extracted:
+                    error_patterns["missing_fields"][field] += 1
+                else:
+                    # Check if values match
+                    extracted_value = extracted[field]
+                    if field == "project_value":
+                        # For monetary values, check percentage difference
+                        try:
+                            if isinstance(extracted_value, (int, float)) and isinstance(expected_value, (int, float)):
+                                if abs(extracted_value - expected_value) / expected_value > 0.1:
+                                    error_patterns["incorrect_fields"][field] += 1
+                        except:
+                            error_patterns["incorrect_fields"][field] += 1
+                    elif isinstance(expected_value, (dict, list)):
+                        # Skip complex types for now
+                        pass
+                    else:
+                        # For strings and other types, check equality
+                        if expected_value != extracted_value:
+                            # Check string similarity
+                            if isinstance(extracted_value, str) and isinstance(expected_value, str):
+                                similarity = difflib.SequenceMatcher(None, str(extracted_value).lower(), str(expected_value).lower()).ratio()
+                                if similarity < 0.8:
+                                    error_patterns["incorrect_fields"][field] += 1
+                            else:
+                                error_patterns["incorrect_fields"][field] += 1
+        
+        # Identify common field errors
+        for field, count in error_patterns["missing_fields"].items():
+            if count >= 2:  # Consider it a pattern if it occurs multiple times
+                error_patterns["common_field_errors"].append(f"Frequently missing field: {field} ({count} occurrences)")
+        
+        for field, count in error_patterns["incorrect_fields"].items():
+            if count >= 2:  # Consider it a pattern if it occurs multiple times
+                error_patterns["common_field_errors"].append(f"Frequently incorrect field: {field} ({count} occurrences)")
+        
+        # Entity extraction issues
+        if len(false_negatives) >= 2:
+            error_patterns["entity_extraction_issues"].append(f"Multiple false negatives in entity extraction ({len(false_negatives)} occurrences)")
+        
+        return error_patterns
+    
+    def _generate_precision_recall_curve(self, extracted_data: List[Dict[str, Any]], 
+                                      expected_results: List[Dict[str, Any]]) -> None:
+        """Generate a precision-recall curve by varying confidence thresholds.
+        
+        Args:
+            extracted_data: List of extracted document data
+            expected_results: List of expected extraction results
+        """
+        # Create thresholds for confidence
+        thresholds = np.linspace(0, 1, 20)
+        precisions = []
+        recalls = []
+        f1_scores = []
+        
+        # Get confidence scores or use extraction_confidence if available
+        confidence_scores = []
+        for data in extracted_data:
+            if "extraction_confidence" in data["extracted_data"]:
+                confidence_scores.append(data["extracted_data"]["extraction_confidence"])
+            else:
+                # Use fixed confidence if not available
+                confidence_scores.append(0.75)
+        
+        # Calculate precision and recall at each threshold
+        for threshold in thresholds:
+            # Filter results by confidence
+            filtered_data = [
+                extracted_data[i] for i in range(len(extracted_data))
+                if confidence_scores[i] >= threshold
+            ]
+            
+            # Skip if no data at this threshold
+            if not filtered_data:
+                precisions.append(0)
+                recalls.append(0)
+                f1_scores.append(0)
+                continue
+            
+            # Count matches
+            matches = 0
+            for expected in expected_results:
+                best_match_score = 0
+                for extracted in filtered_data:
+                    match_score = self._calculate_extraction_match(
+                        extracted["extracted_data"], 
+                        expected
+                    )
+                    
+                    if match_score > best_match_score:
+                        best_match_score = match_score
+                
+                if best_match_score > 0.5:
+                    matches += 1
+            
+            # Calculate metrics
+            precision = matches / len(filtered_data) if filtered_data else 0
+            recall = matches / len(expected_results) if expected_results else 0
+            f1 = 2 * precision * recall / (precision + recall) if precision + recall > 0 else 0
+            
+            precisions.append(precision)
+            recalls.append(recall)
+            f1_scores.append(f1)
+        
+        # Plot precision-recall curve
+        plt.figure(figsize=(10, 8))
+        
+        # Precision vs. Recall curve
+        plt.subplot(2, 1, 1)
+        plt.plot(recalls, precisions, 'b-', linewidth=2)
+        plt.xlabel('Recall')
+        plt.ylabel('Precision')
+        plt.title('Precision-Recall Curve')
+        plt.grid(True)
+        
+        # F1 vs. Threshold curve
+        plt.subplot(2, 1, 2)
+        plt.plot(thresholds, f1_scores, 'r-', linewidth=2)
+        plt.xlabel('Confidence Threshold')
+        plt.ylabel('F1 Score')
+        plt.title('F1 Score vs. Confidence Threshold')
+        plt.grid(True)
+        
+        # Find optimal threshold
+        optimal_idx = np.argmax(f1_scores)
+        optimal_threshold = thresholds[optimal_idx]
+        optimal_f1 = f1_scores[optimal_idx]
+        
+        plt.axvline(x=optimal_threshold, color='g', linestyle='--')
+        plt.text(optimal_threshold + 0.02, optimal_f1 - 0.1, 
+                f'Optimal Threshold: {optimal_threshold:.2f}\nF1: {optimal_f1:.2f}', 
+                verticalalignment='bottom')
+        
+        # Save the figure
+        plt.tight_layout()
+        plt.savefig(self.output_dir / "precision_recall_curve.png")
+        plt.close()
+        
+        # Save threshold data
+        threshold_data = {
+            "thresholds": thresholds.tolist(),
+            "precisions": precisions,
+            "recalls": recalls,
+            "f1_scores": f1_scores,
+            "optimal_threshold": float(optimal_threshold),
+            "optimal_f1": float(optimal_f1)
+        }
+        
+        with open(self.output_dir / "threshold_analysis.json", 'w') as f:
+            json.dump(threshold_data, f, indent=2)
+    
+    def benchmark_performance(self, document_paths: List[str], iterations: int = 3,
+                           enable_memory_tracking: bool = True) -> Dict[str, Any]:
+        """Benchmark the performance of document extraction.
+        
+        Args:
+            document_paths: List of paths to test documents
+            iterations: Number of iterations to run for reliable measurement
+            enable_memory_tracking: Whether to track memory usage
+            
+        Returns:
+            Dictionary with performance benchmark results
+        """
+        if not self.legal_processor:
+            logger.error("LegalProcessor not initialized. Cannot benchmark performance.")
+            return {"error": "LegalProcessor not initialized"}
+            
+        logger.info(f"Benchmarking performance with {len(document_paths)} documents and {iterations} iterations")
+        
+        results = {
+            "document_count": len(document_paths),
+            "iterations": iterations,
+            "timing": {
+                "total_time": 0.0,
+                "avg_document_time": 0.0,
+                "std_dev": 0.0,
+                "min_time": float('inf'),
+                "max_time": 0.0
+            },
+            "memory": {},
+            "component_timing": {
+                "document_parsing": 0.0,
+                "nlp_processing": 0.0,
+                "lead_creation": 0.0
+            },
+            "throughput": 0.0
+        }
+        
+        all_times = []
+        iteration_times = []
+        
+        # Track memory if enabled
+        if enable_memory_tracking and self.enable_memory_tracking:
+            results["memory"]["before"] = self.process.memory_info().rss / 1024 / 1024  # MB
+        
+        # Run the benchmark
+        for i in range(iterations):
+            iteration_start = time.time()
+            doc_times = []
+            
+            for doc_path in document_paths:
+                try:
+                    # Process document
+                    doc_start_time = time.time()
+                    
+                    # Read document
+                    with open(doc_path, 'r', encoding='utf-8') as f:
+                        document_text = f.read()
+                    
+                    # Process through legal processor
+                    self.legal_processor.process_document(document_text)
+                    
+                    # Record time
+                    doc_time = time.time() - doc_start_time
+                    doc_times.append(doc_time)
+                    all_times.append(doc_time)
+                    
+                except Exception as e:
+                    logger.error(f"Error in benchmark for document {doc_path}: {e}")
+            
+            iteration_time = time.time() - iteration_start
+            iteration_times.append(iteration_time)
+            
+            logger.info(f"Benchmark iteration {i+1}/{iterations} completed in {iteration_time:.2f}s")
+        
+        # Calculate performance metrics
+        if all_times:
+            avg_time = sum(all_times) / len(all_times)
+            std_dev = (sum((t - avg_time) ** 2 for t in all_times) / len(all_times)) ** 0.5
+            min_time = min(all_times)
+            max_time = max(all_times)
+            
+            results["timing"]["avg_document_time"] = avg_time
+            results["timing"]["std_dev"] = std_dev
+            results["timing"]["min_time"] = min_time
+            results["timing"]["max_time"] = max_time
+        
+        # Total time and throughput
+        total_time = sum(iteration_times)
+        results["timing"]["total_time"] = total_time
+        results["throughput"] = (len(document_paths) * iterations) / total_time if total_time > 0 else 0
+        
+        # Track memory if enabled
+        if enable_memory_tracking and self.enable_memory_tracking:
+            results["memory"]["after"] = self.process.memory_info().rss / 1024 / 1024  # MB
+            results["memory"]["used"] = results["memory"]["after"] - results["memory"]["before"]
+        
+        # Save benchmark results
+        with open(self.output_dir / "performance_benchmark.json", 'w') as f:
+            json.dump(results, f, indent=2)
+        
+        return results
     
     def _save_recommendations(self, results: Dict[str, Any], output_path: Path) -> None:
         """Save recommendations to a text file.

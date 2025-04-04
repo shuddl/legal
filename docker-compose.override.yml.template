@@ -1,0 +1,27 @@
+version: '3.8'
+
+# This is a template for local development settings
+# Copy this file to docker-compose.override.yml and modify as needed
+# The override file will not be committed to git
+
+services:
+  scraper:
+    # Development settings
+    environment:
+      - ENV=development
+      - LOG_LEVEL=DEBUG
+      - API_KEY=dev_api_key
+    # Mount local code for development
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+      - ./exports:/app/exports
+      - ./logs:/app/logs
+    # No resource limits for development
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+    # Enable hot-reload for development
+    command: ["python", "-m", "uvicorn", "src.perera_lead_scraper.api.api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

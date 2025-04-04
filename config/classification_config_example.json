@@ -1,0 +1,149 @@
+{
+  "value_tiers": {
+    "default": {
+      "small": 2000000,
+      "medium": 10000000,
+      "large": 50000000
+    },
+    "healthcare": {
+      "small": 5000000,
+      "medium": 20000000,
+      "large": 100000000
+    },
+    "education": {
+      "small": 5000000,
+      "medium": 25000000,
+      "large": 75000000
+    },
+    "energy": {
+      "small": 10000000,
+      "medium": 50000000,
+      "large": 200000000
+    },
+    "entertainment": {
+      "small": 5000000,
+      "medium": 25000000,
+      "large": 100000000
+    },
+    "commercial": {
+      "small": 2000000,
+      "medium": 10000000,
+      "large": 50000000
+    }
+  },
+  "timeline_indicators": {
+    "immediate": [
+      "immediate", "urgent", "emergency", "asap", "right away",
+      "this month", "next month", "within 30 days", "within 60 days",
+      "within 90 days", "q1", "q2", "breaking ground", "construction imminent"
+    ],
+    "short_term": [
+      "short-term", "soon", "this quarter", "next quarter",
+      "within 6 months", "3-6 months", "coming months", 
+      "summer", "fall", "winter", "spring"
+    ],
+    "mid_term": [
+      "mid-term", "mid term", "medium-term", "medium term", 
+      "6-12 months", "within a year", "later this year", "next year",
+      "q3", "q4", "fiscal year"
+    ],
+    "long_term": [
+      "long-term", "long term", "future", "years", "multi-year",
+      "next fiscal year", "beyond a year", "planning stage",
+      "master plan", "long-range", "vision", "roadmap"
+    ]
+  },
+  "decision_stage_indicators": {
+    "conceptual": [
+      "concept", "vision", "idea", "proposed", "preliminary",
+      "exploring", "feasibility study", "initial planning",
+      "considering", "evaluating", "assessing", "potential project"
+    ],
+    "planning": [
+      "planning", "design", "designing", "architect", "engineering",
+      "drawings", "blueprint", "schematics", "program development",
+      "requirements gathering", "site selection", "development plan"
+    ],
+    "approval": [
+      "approval", "permit", "permitting", "zoning", "variance",
+      "environmental review", "public hearing", "commission review",
+      "board approval", "council approval", "regulatory", "compliance"
+    ],
+    "funding": [
+      "funding", "budget", "financing", "investment", "investors",
+      "capital", "appropriation", "bonds", "levy", "fundraising",
+      "grant", "allocation", "financial close", "committed funds"
+    ],
+    "implementation": [
+      "implementation", "execution", "construction", "building",
+      "groundbreaking", "breaking ground", "site work", "contractor",
+      "bid", "procurement", "rfp", "request for proposal", "tender"
+    ]
+  },
+  "competition_indicators": {
+    "low": [
+      "sole source", "specialized", "unique", "proprietary", "niche",
+      "limited competition", "selective", "invited", "negotiated",
+      "exclusive", "preferred provider", "prequalified", "targeted"
+    ],
+    "medium": [
+      "competitive", "multiple bidders", "several companies",
+      "qualified bidders", "short list", "selected firms",
+      "local contractors", "regional competition"
+    ],
+    "high": [
+      "highly competitive", "many bidders", "open bid", "public tender",
+      "open rfp", "national competition", "advertised", "widespread interest",
+      "numerous", "low barriers", "open to all"
+    ]
+  },
+  "win_probability_factors": {
+    "market_sector_fit": 0.20,
+    "geographical_proximity": 0.15,
+    "project_size_fit": 0.15,
+    "competition_level": 0.20,
+    "relationship_strength": 0.15,
+    "timeline_alignment": 0.15
+  },
+  "priority_scoring": {
+    "value_weight": 0.30,
+    "timeline_weight": 0.25,
+    "win_probability_weight": 0.30,
+    "strategic_alignment_weight": 0.15
+  },
+  "sector_expertise_levels": {
+    "healthcare": 0.9,
+    "education": 0.85,
+    "energy": 0.75,
+    "commercial": 0.80,
+    "entertainment": 0.75,
+    "residential": 0.60,
+    "government": 0.70,
+    "industrial": 0.65,
+    "utilities": 0.70,
+    "other": 0.50
+  },
+  "strategic_locations": [
+    "Los Angeles", "Orange County", "San Diego", "Riverside",
+    "San Bernardino", "Ventura", "Santa Barbara", "Imperial",
+    "Long Beach", "Irvine", "Pasadena", "Anaheim", 
+    "Santa Monica", "Beverly Hills", "Newport Beach"
+  ],
+  "primary_client_list": [
+    "UCLA Health",
+    "Cedars-Sinai Medical Center",
+    "Kaiser Permanente",
+    "University of California",
+    "California State University",
+    "Los Angeles Unified School District",
+    "City of Los Angeles",
+    "County of Los Angeles",
+    "Southern California Edison",
+    "Los Angeles Department of Water and Power",
+    "The Irvine Company",
+    "Related California",
+    "Kilroy Realty",
+    "Disney"
+  ],
+  "model_version": "1.0.0"
+}

@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Main lead scraper application
+  scraper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    container_name: perera-lead-scraper
+    environment:
+      - ENV=production
+      - TZ=America/New_York
+      - API_KEY=${API_KEY:-change_me_in_production}
+      - HUBSPOT_API_KEY=${HUBSPOT_API_KEY:-}
+      - DATABASE_URL=sqlite:///app/data/leads.db
+      - LOG_LEVEL=INFO
+      - MAX_WORKERS=${MAX_WORKERS:-4}
+      - PORT=8000
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ./data:/app/data
+      - ./exports:/app/exports
+      - ./logs:/app/logs
+    healthcheck:
+      test: /app/healthcheck.sh
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+    networks:
+      - scraper-net
+
+  # Database service (SQLite by default, but can be expanded to PostgreSQL)
+  # Placeholder for future database migration
+  # db:
+  #   image: postgres:13-alpine
+  #   container_name: perera-lead-scraper-db
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_PASSWORD=${DB_PASSWORD:-change_me_in_production}
+  #     - POSTGRES_USER=${DB_USER:-leaduser}
+  #     - POSTGRES_DB=${DB_NAME:-leaddb}
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   networks:
+  #     - scraper-net
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U leaduser"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+
+networks:
+  scraper-net:
+    driver: bridge
+
+# Define volumes for persistent data storage
+volumes:
+  # postgres-data:  # Uncomment when migrating to PostgreSQL
+  #   driver: local
+
+# In docker-compose.override.yml you can override settings for local development

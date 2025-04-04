@@ -1,0 +1,317 @@
+{
+  "company_data_api": {
+    "acme_construction": {
+      "name": "Acme Construction",
+      "description": "A leading construction company specializing in commercial projects.",
+      "website": "https://acmeconstruction.example.com",
+      "industry": "Construction",
+      "size": "Medium (50-249)",
+      "location": {
+        "address": "123 Builder St",
+        "city": "Los Angeles",
+        "state": "California",
+        "postal_code": "90001"
+      }
+    },
+    "healthcare_builders": {
+      "name": "Healthcare Builders Inc",
+      "description": "Specialized construction company focused on healthcare facilities.",
+      "website": "https://healthcarebuilders.example.com",
+      "industry": "Construction - Healthcare",
+      "size": "Large (250-999)",
+      "location": {
+        "address": "456 Medical Plaza",
+        "city": "San Diego",
+        "state": "California",
+        "postal_code": "92101"
+      }
+    },
+    "education_constructors": {
+      "name": "Education Constructors",
+      "description": "Premier builder of educational facilities across Southern California.",
+      "website": "https://educationconstructors.example.com",
+      "industry": "Construction - Education",
+      "size": "Medium (50-249)",
+      "location": {
+        "address": "789 Campus Drive",
+        "city": "Irvine",
+        "state": "California",
+        "postal_code": "92617"
+      }
+    },
+    "commercial_development_group": {
+      "name": "Commercial Development Group",
+      "description": "Full-service commercial construction and development company.",
+      "website": "https://commercialdevelopment.example.com",
+      "industry": "Construction - Commercial",
+      "size": "Large (250-999)",
+      "location": {
+        "address": "101 Business Park",
+        "city": "Orange County",
+        "state": "California",
+        "postal_code": "92868"
+      }
+    },
+    "energy_construction_services": {
+      "name": "Energy Construction Services",
+      "description": "Specialized construction firm for energy infrastructure projects.",
+      "website": "https://energyconstruction.example.com",
+      "industry": "Construction - Energy",
+      "size": "Medium (50-249)",
+      "location": {
+        "address": "555 Power Ave",
+        "city": "Riverside",
+        "state": "California",
+        "postal_code": "92501"
+      }
+    },
+    "entertainment_venues_builders": {
+      "name": "Entertainment Venues Builders",
+      "description": "Construction company specializing in entertainment facilities and venues.",
+      "website": "https://entertainmentvenues.example.com",
+      "industry": "Construction - Entertainment",
+      "size": "Medium (50-249)",
+      "location": {
+        "address": "222 Stage Blvd",
+        "city": "Los Angeles",
+        "state": "California",
+        "postal_code": "90028"
+      }
+    },
+    "pacific_contractors": {
+      "name": "Pacific Contractors",
+      "description": "General contractor serving the greater Los Angeles area.",
+      "website": "https://pacificcontractors.example.com",
+      "industry": "Construction",
+      "size": "Small (10-49)",
+      "location": {
+        "address": "333 Ocean View",
+        "city": "Long Beach",
+        "state": "California",
+        "postal_code": "90802"
+      }
+    },
+    "west_coast_development": {
+      "name": "West Coast Development",
+      "description": "Full-service development and construction firm focusing on commercial projects.",
+      "website": "https://westcoastdev.example.com",
+      "industry": "Construction - Commercial",
+      "size": "Large (250-999)",
+      "location": {
+        "address": "444 Coastal Highway",
+        "city": "Santa Barbara",
+        "state": "California",
+        "postal_code": "93101"
+      }
+    },
+    "southern_california_construction": {
+      "name": "Southern California Construction",
+      "description": "Regional construction company serving all of Southern California.",
+      "website": "https://socalconstruction.example.com",
+      "industry": "Construction",
+      "size": "Large (250-999)",
+      "location": {
+        "address": "777 Regional Center",
+        "city": "Anaheim",
+        "state": "California",
+        "postal_code": "92805"
+      }
+    }
+  },
+  "contact_finder_api": {
+    "acmeconstruction.example.com": [
+      {
+        "name": "John Smith",
+        "title": "Project Manager",
+        "email": "john.smith@acmeconstruction.example.com",
+        "phone": "(555) 123-4567"
+      },
+      {
+        "name": "Jane Doe",
+        "title": "Business Development Director",
+        "email": "jane.doe@acmeconstruction.example.com",
+        "phone": "(555) 123-4568"
+      }
+    ],
+    "healthcarebuilders.example.com": [
+      {
+        "name": "Robert Johnson",
+        "title": "Healthcare Division Director",
+        "email": "robert.johnson@healthcarebuilders.example.com",
+        "phone": "(555) 987-6543"
+      }
+    ],
+    "educationconstructors.example.com": [
+      {
+        "name": "Michael Williams",
+        "title": "CEO",
+        "email": "michael.williams@educationconstructors.example.com",
+        "phone": "(555) 234-5678"
+      },
+      {
+        "name": "Emily Brown",
+        "title": "Education Project Director",
+        "email": "emily.brown@educationconstructors.example.com",
+        "phone": "(555) 234-5679"
+      }
+    ],
+    "commercialdevelopment.example.com": [
+      {
+        "name": "David Clark",
+        "title": "President",
+        "email": "david.clark@commercialdevelopment.example.com",
+        "phone": "(555) 345-6789"
+      },
+      {
+        "name": "Sarah Miller",
+        "title": "Commercial Development Manager",
+        "email": "sarah.miller@commercialdevelopment.example.com",
+        "phone": "(555) 345-6780"
+      }
+    ],
+    "energyconstruction.example.com": [
+      {
+        "name": "Thomas Wilson",
+        "title": "CEO",
+        "email": "thomas.wilson@energyconstruction.example.com",
+        "phone": "(555) 456-7890"
+      }
+    ],
+    "entertainmentvenues.example.com": [
+      {
+        "name": "Jennifer Martinez",
+        "title": "Project Director",
+        "email": "jennifer.martinez@entertainmentvenues.example.com",
+        "phone": "(555) 567-8901"
+      },
+      {
+        "name": "Christopher Lee",
+        "title": "Business Development",
+        "email": "christopher.lee@entertainmentvenues.example.com",
+        "phone": "(555) 567-8902"
+      }
+    ]
+  },
+  "project_database_api": {
+    "acme_construction": [
+      {
+        "id": "proj001",
+        "title": "Downtown Office Tower",
+        "description": "25-story office building in downtown Los Angeles",
+        "location": "Los Angeles, CA",
+        "project_type": "Commercial",
+        "project_value": 75000000,
+        "date": "2023-08-15"
+      },
+      {
+        "id": "proj002",
+        "title": "Retail Complex Renovation",
+        "description": "Major renovation of 150,000 sq ft shopping center",
+        "location": "Orange County, CA",
+        "project_type": "Commercial",
+        "project_value": 15000000,
+        "date": "2023-06-22"
+      }
+    ],
+    "healthcare_builders": [
+      {
+        "id": "proj003",
+        "title": "Memorial Hospital Wing",
+        "description": "New pediatric wing for Memorial Hospital",
+        "location": "San Diego, CA",
+        "project_type": "Healthcare",
+        "project_value": 45000000,
+        "date": "2023-07-10"
+      },
+      {
+        "id": "proj004",
+        "title": "Medical Office Building",
+        "description": "Four-story medical office building with specialty clinics",
+        "location": "Irvine, CA",
+        "project_type": "Healthcare",
+        "project_value": 22000000,
+        "date": "2023-09-05"
+      }
+    ],
+    "education_constructors": [
+      {
+        "id": "proj005",
+        "title": "University Science Center",
+        "description": "State-of-the-art science and research facility for university campus",
+        "location": "Irvine, CA",
+        "project_type": "Education",
+        "project_value": 65000000,
+        "date": "2023-05-12"
+      },
+      {
+        "id": "proj006",
+        "title": "Elementary School Renovation",
+        "description": "Comprehensive renovation of existing elementary school",
+        "location": "Long Beach, CA",
+        "project_type": "Education",
+        "project_value": 18000000,
+        "date": "2023-08-30"
+      }
+    ],
+    "commercial_development_group": [
+      {
+        "id": "proj007",
+        "title": "Mixed-Use Development",
+        "description": "Mixed-use development with retail, office, and residential components",
+        "location": "Anaheim, CA",
+        "project_type": "Commercial",
+        "project_value": 120000000,
+        "date": "2023-07-22"
+      },
+      {
+        "id": "proj008",
+        "title": "Corporate Headquarters",
+        "description": "New corporate headquarters building for tech company",
+        "location": "Orange County, CA",
+        "project_type": "Commercial",
+        "project_value": 85000000,
+        "date": "2023-09-15"
+      }
+    ],
+    "energy_construction_services": [
+      {
+        "id": "proj009",
+        "title": "Solar Farm Installation",
+        "description": "Large-scale solar farm project in Southern California desert",
+        "location": "Riverside County, CA",
+        "project_type": "Energy",
+        "project_value": 95000000,
+        "date": "2023-06-10"
+      },
+      {
+        "id": "proj010",
+        "title": "Energy Storage Facility",
+        "description": "Battery storage facility for renewable energy grid support",
+        "location": "San Bernardino, CA",
+        "project_type": "Energy",
+        "project_value": 45000000,
+        "date": "2023-08-05"
+      }
+    ],
+    "entertainment_venues_builders": [
+      {
+        "id": "proj011",
+        "title": "Concert Venue Renovation",
+        "description": "Comprehensive renovation of existing concert venue",
+        "location": "Los Angeles, CA",
+        "project_type": "Entertainment",
+        "project_value": 35000000,
+        "date": "2023-07-30"
+      },
+      {
+        "id": "proj012",
+        "title": "Theater Complex",
+        "description": "New multi-theater complex with supporting facilities",
+        "location": "San Diego, CA",
+        "project_type": "Entertainment",
+        "project_value": 48000000,
+        "date": "2023-09-22"
+      }
+    ]
+  }
+}

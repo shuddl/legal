@@ -13,6 +13,7 @@ import sys
 import argparse
 import logging
 from typing import Optional, List, Dict, Any
+from pathlib import Path
 
 from perera_lead_scraper.config import config
 from perera_lead_scraper.utils.logger import configure_logger
@@ -42,6 +43,8 @@ def setup_argparse() -> argparse.ArgumentParser:
             "export",
             "sync-hubspot",
             "list-sources",
+            "analyze-legal",
+            "discover-legal-leads",
         ],
         help="Command to execute",
     )
@@ -55,7 +58,7 @@ def setup_argparse() -> argparse.ArgumentParser:
     parser.add_argument(
         "--source-type",
         type=str,
-        choices=["rss", "website", "city_portal", "permit_database", "api"],
+        choices=["rss", "website", "city_portal", "permit_database", "api", "legal"],
         help="Run only sources of a specific type",
     )
     parser.add_argument(
@@ -90,6 +93,40 @@ def setup_argparse() -> argparse.ArgumentParser:
         type=int,
         default=10,
         help="Number of parallel workers (default: 10)",
+    )
+
+    # Legal document analysis options
+    parser.add_argument(
+        "--file",
+        type=str,
+        help="Legal document file to analyze",
+    )
+    parser.add_argument(
+        "--directory",
+        type=str,
+        help="Directory of legal documents to analyze",
+    )
+    parser.add_argument(
+        "--provider",
+        type=str,
+        help="Legal API provider to use",
+    )
+    parser.add_argument(
+        "--location",
+        type=str,
+        help="Location to filter legal documents by",
+    )
+    parser.add_argument(
+        "--document-type",
+        type=str,
+        choices=["permit", "contract", "zoning", "regulatory"],
+        help="Type of legal document to process",
+    )
+    parser.add_argument(
+        "--days",
+        type=int,
+        default=14,
+        help="Number of days to look back for API sources (default: 14)",
     )
 
     # Common options
@@ -237,6 +274,7 @@ def export_leads(output: Optional[str] = None, format: str = "csv") -> bool:
     
     try:
         from perera_lead_scraper.utils.storage import LeadStorage
+        from datetime import datetime
         
         # Initialize storage
         storage = LeadStorage()
@@ -416,6 +454,173 @@ def show_status() -> bool:
         return False
 
 
+def analyze_legal_document(
+    file_path: Optional[str] = None,
+    directory_path: Optional[str] = None,
+    document_type: Optional[str] = None
+) -> bool:
+    """
+    Analyze legal documents and display results.
+
+    Args:
+        file_path: Path to a single legal document file
+        directory_path: Path to a directory of legal documents
+        document_type: Type of legal document
+
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    logger = logging.getLogger(__name__)
+    
+    try:
+        from perera_lead_scraper.legal.legal_document_analyzer import LegalDocumentAnalyzer
+        
+        # Initialize analyzer
+        analyzer = LegalDocumentAnalyzer()
+        
+        # Process a single file
+        if file_path:
+            path = Path(file_path)
+            if not path.exists() or not path.is_file():
+                logger.error(f"File not found: {file_path}")
+                return False
+            
+            logger.info(f"Analyzing legal document: {path}")
+            
+            # Parse the document
+            document_text = analyzer.document_parser.parse_file(path)
+            
+            # Analyze the document
+            analysis = analyzer.analyze_document(document_text, document_type)
+            
+            # Print analysis results
+            print(f"Document Analysis Results for {path.name}:")
+            print(f"  Document Type: {analysis.get('document_type', 'unknown')}")
+            print(f"  Lead Potential: {analysis.get('lead_potential', 0.0):.2f}")
+            print(f"  Lead Category: {analysis.get('lead_category', 'unknown')}")
+            print(f"  Meets Requirements: {analysis.get('meets_requirements', False)}")
+            
+            if analysis.get("project_value"):
+                print(f"  Estimated Value: ${analysis.get('project_value'):,.2f}")
+            
+            if analysis.get("market_sector"):
+                print(f"  Market Sector: {analysis.get('market_sector')}")
+            
+            if analysis.get("locations"):
+                print(f"  Locations: {', '.join(analysis.get('locations', []))}")
+            
+            if analysis.get("meets_requirements", False):
+                # Extract a lead
+                lead = analyzer.extract_leads_from_document(document_text, document_type)
+                if lead:
+                    print(f"\nLead Extracted:")
+                    print(f"  Title: {lead.title}")
+                    if lead.project_value:
+                        print(f"  Value: ${lead.project_value:,.2f}")
+                    print(f"  Market Sector: {lead.market_sector}")
+                    print(f"  Confidence: {lead.confidence:.2f}")
+                    print(f"  Location: {lead.location}")
+            
+            return True
+        
+        # Process a directory of documents
+        elif directory_path:
+            path = Path(directory_path)
+            if not path.exists() or not path.is_dir():
+                logger.error(f"Directory not found: {directory_path}")
+                return False
+            
+            logger.info(f"Processing legal documents in: {path}")
+            
+            # Extract leads from documents
+            leads = analyzer.extract_leads_from_local_documents(path)
+            
+            # Print results
+            print(f"Extracted {len(leads)} leads from {path}:")
+            for i, lead in enumerate(leads, 1):
+                print(f"\n{i}. {lead.title}")
+                if lead.project_value:
+                    print(f"   Value: ${lead.project_value:,.2f}")
+                print(f"   Market Sector: {lead.market_sector}")
+                print(f"   Confidence: {lead.confidence:.2f}")
+                print(f"   Location: {lead.location}")
+            
+            return True
+        
+        else:
+            logger.error("No file or directory specified for legal document analysis")
+            return False
+    
+    except Exception as e:
+        logger.exception(f"Error analyzing legal documents: {str(e)}")
+        return False
+
+
+def discover_legal_leads(
+    provider: Optional[str] = None,
+    location: Optional[str] = None,
+    document_type: Optional[str] = None,
+    days: int = 14
+) -> bool:
+    """
+    Discover leads from legal document APIs.
+
+    Args:
+        provider: API provider to use
+        location: Location to filter by
+        document_type: Type of document to search for
+        days: Number of days to look back
+
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    logger = logging.getLogger(__name__)
+    
+    try:
+        from perera_lead_scraper.legal.legal_document_analyzer import LegalDocumentAnalyzer
+        from perera_lead_scraper.utils.storage import LeadStorage
+        
+        # Initialize analyzer and storage
+        analyzer = LegalDocumentAnalyzer()
+        storage = LeadStorage()
+        
+        # Discover leads from specific provider or all configured sources
+        if provider:
+            logger.info(f"Discovering leads from {provider} API")
+            leads = analyzer.extract_leads_from_api(
+                provider=provider,
+                location=location,
+                document_type=document_type,
+                days=days
+            )
+        else:
+            logger.info("Discovering leads from all configured legal sources")
+            leads = analyzer.discover_leads_from_multiple_sources()
+        
+        # Print discovery results
+        print(f"Discovered {len(leads)} leads from legal documents:")
+        for i, lead in enumerate(leads, 1):
+            print(f"\n{i}. {lead.title}")
+            if lead.project_value:
+                print(f"   Value: ${lead.project_value:,.2f}")
+            print(f"   Market Sector: {lead.market_sector}")
+            print(f"   Confidence: {lead.confidence:.2f}")
+            print(f"   Source: {lead.source}")
+            print(f"   Location: {lead.location}")
+        
+        # Ask if leads should be stored
+        if leads and input("\nStore these leads? (y/n): ").lower().startswith("y"):
+            for lead in leads:
+                storage.store_lead(lead)
+            print(f"Stored {len(leads)} leads in the database")
+        
+        return True
+    
+    except Exception as e:
+        logger.exception(f"Error discovering legal leads: {str(e)}")
+        return False
+
+
 def main() -> int:
     """
     Main entry point for the application.
@@ -464,6 +669,10 @@ def main() -> int:
             success = sync_with_hubspot()
         elif args.command == "list-sources":
             success = list_sources()
+        elif args.command == "analyze-legal":
+            success = analyze_legal_document(args.file, args.directory, args.document_type)
+        elif args.command == "discover-legal-leads":
+            success = discover_legal_leads(args.provider, args.location, args.document_type, args.days)
         else:
             logger.error(f"Unknown command: {args.command}")
             return 1
@@ -479,5 +688,4 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    from datetime import datetime  # Only needed for export_leads
     sys.exit(main())

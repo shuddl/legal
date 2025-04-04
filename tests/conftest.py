@@ -16,6 +16,16 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # Import the package
 import src.perera_lead_scraper as perera_lead_scraper
 
+# Define pytest markers
+def pytest_configure(config):
+    """Configure pytest."""
+    config.addinivalue_line(
+        "markers", "integration: mark test as requiring integration setup"
+    )
+    config.addinivalue_line(
+        "markers", "hubspot: mark test as requiring HubSpot access"
+    )
+
 
 @pytest.fixture(scope="session")
 def test_data_dir() -> Path:

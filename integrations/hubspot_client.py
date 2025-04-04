@@ -578,6 +578,176 @@ class HubSpotClient:
             logger.error(f"Error associating contact to deal: {str(e)}")
             return False
     
+    def find_or_create_company(self, properties: Dict[str, Any]) -> Optional[str]:
+        """
+        Find an existing company or create a new one.
+        
+        Args:
+            properties: Company properties
+        
+        Returns:
+            Optional[str]: Company ID if found/created, None otherwise
+        """
+        try:
+            # Check if company already exists by name
+            if "name" in properties and properties["name"]:
+                company_name = properties["name"]
+                
+                search_request = {
+                    "filterGroups": [
+                        {
+                            "filters": [
+                                {
+                                    "propertyName": "name",
+                                    "operator": "EQ",
+                                    "value": company_name
+                                }
+                            ]
+                        }
+                    ]
+                }
+                
+                result = self._make_api_request(
+                    self.client.crm.companies.search_api.do_search,
+                    public_object_search_request=search_request
+                )
+                
+                if result.results and len(result.results) > 0:
+                    company_id = result.results[0].id
+                    
+                    # Update existing company
+                    self._make_api_request(
+                        self.client.crm.companies.basic_api.update,
+                        company_id=company_id,
+                        simple_public_object_input={"properties": properties}
+                    )
+                    
+                    logger.info(f"Updated existing company: {company_name} ({company_id})")
+                    return company_id
+            
+            # Create new company
+            log_integration_event("hubspot", "create_company", f"Creating new company: {properties.get('name', 'Unknown')}")
+            
+            company = self._make_api_request(
+                self.client.crm.companies.basic_api.create,
+                simple_public_object_input={"properties": properties}
+            )
+            
+            return company.id
+            
+        except Exception as e:
+            logger.error(f"Error finding/creating company: {str(e)}")
+            return None
+    
+    def find_or_create_contact(self, properties: Dict[str, Any]) -> Optional[str]:
+        """
+        Find an existing contact or create a new one.
+        
+        Args:
+            properties: Contact properties
+        
+        Returns:
+            Optional[str]: Contact ID if found/created, None otherwise
+        """
+        try:
+            # Check if contact already exists by email
+            if "email" in properties and properties["email"]:
+                existing_contact = self.get_contact_by_email(properties["email"])
+                if existing_contact:
+                    contact_id = existing_contact["id"]
+                    
+                    # Update existing contact
+                    self._make_api_request(
+                        self.client.crm.contacts.basic_api.update,
+                        contact_id=contact_id,
+                        simple_public_object_input={"properties": properties}
+                    )
+                    
+                    logger.info(f"Updated existing contact: {properties.get('email')} ({contact_id})")
+                    return contact_id
+            
+            # Create new contact
+            return self.create_contact(properties)
+            
+        except Exception as e:
+            logger.error(f"Error finding/creating contact: {str(e)}")
+            return None
+    
+    def associate_company_to_deal(self, company_id: str, deal_id: str) -> bool:
+        """
+        Associate a company with a deal.
+        
+        Args:
+            company_id: Company ID
+            deal_id: Deal ID
+        
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            # Create association
+            self._make_api_request(
+                self.client.crm.deals.associations_api.create,
+                deal_id=deal_id,
+                to_object_type="companies",
+                to_object_id=company_id,
+                association_type="deal_to_company"
+            )
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error associating company to deal: {str(e)}")
+            return False
+    
+    def create_note(self, entity_id: str, entity_type: str, content: str, title: Optional[str] = None) -> Optional[str]:
+        """
+        Create a note on an entity.
+        
+        Args:
+            entity_id: ID of the entity to attach note to
+            entity_type: Type of entity (contact, company, deal)
+            content: Note content
+            title: Note title (optional)
+        
+        Returns:
+            Optional[str]: Note ID if created, None otherwise
+        """
+        try:
+            # Set up note properties
+            properties = {
+                "hs_note_body": content,
+            }
+            
+            if title:
+                properties["hs_note_body_html"] = f"<h3>{title}</h3><p>{content}</p>"
+            
+            # Create note
+            note = self._make_api_request(
+                self.client.crm.objects.notes.basic_api.create,
+                simple_public_object_input={"properties": properties}
+            )
+            
+            note_id = note.id
+            
+            # Associate note with entity
+            association_type = f"note_to_{entity_type}"
+            
+            self._make_api_request(
+                self.client.crm.objects.notes.associations_api.create,
+                note_id=note_id,
+                to_object_type=entity_type,
+                to_object_id=entity_id,
+                association_type=association_type
+            )
+            
+            logger.info(f"Created note for {entity_type} {entity_id}")
+            return note_id
+            
+        except Exception as e:
+            logger.error(f"Error creating note: {str(e)}")
+            return None
+    
     def ensure_custom_properties(self) -> bool:
         """
         Ensure that required custom properties exist in HubSpot.
