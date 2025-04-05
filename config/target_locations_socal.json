@@ -1,0 +1,180 @@
+{
+  "target_regions": [
+    {
+      "name": "Los Angeles County",
+      "priority": 10,
+      "cities": [
+        "Los Angeles",
+        "Long Beach", 
+        "Pasadena",
+        "Santa Monica",
+        "Glendale",
+        "Torrance",
+        "Burbank",
+        "West Hollywood",
+        "Culver City",
+        "Inglewood",
+        "Beverly Hills",
+        "El Segundo",
+        "Malibu",
+        "Arcadia",
+        "Whittier",
+        "Pomona",
+        "Monterey Park",
+        "Covina",
+        "Downey",
+        "Cerritos"
+      ]
+    },
+    {
+      "name": "Orange County",
+      "priority": 8,
+      "cities": [
+        "Anaheim",
+        "Santa Ana",
+        "Irvine",
+        "Huntington Beach",
+        "Costa Mesa",
+        "Newport Beach",
+        "Orange",
+        "Fullerton",
+        "Garden Grove",
+        "Tustin",
+        "Laguna Beach",
+        "Laguna Niguel",
+        "San Clemente",
+        "Dana Point",
+        "Mission Viejo",
+        "Brea",
+        "Placentia",
+        "La Habra",
+        "Buena Park",
+        "Yorba Linda"
+      ]
+    },
+    {
+      "name": "San Diego County",
+      "priority": 6,
+      "cities": [
+        "San Diego",
+        "Oceanside",
+        "Escondido",
+        "Chula Vista",
+        "Carlsbad",
+        "Encinitas",
+        "La Jolla",
+        "Del Mar",
+        "Vista",
+        "San Marcos",
+        "National City",
+        "El Cajon",
+        "La Mesa",
+        "Poway",
+        "Solana Beach"
+      ]
+    },
+    {
+      "name": "Riverside County",
+      "priority": 7,
+      "cities": [
+        "Riverside",
+        "Palm Springs",
+        "Palm Desert",
+        "Corona",
+        "Moreno Valley",
+        "Temecula",
+        "Murrieta",
+        "Hemet",
+        "Indio",
+        "Rancho Mirage",
+        "Cathedral City",
+        "La Quinta",
+        "Coachella",
+        "Desert Hot Springs"
+      ]
+    },
+    {
+      "name": "San Bernardino County",
+      "priority": 7,
+      "cities": [
+        "San Bernardino",
+        "Ontario",
+        "Rancho Cucamonga",
+        "Fontana",
+        "Redlands",
+        "Chino",
+        "Upland",
+        "Chino Hills",
+        "Victorville",
+        "Colton",
+        "Highland",
+        "Montclair",
+        "Yucaipa",
+        "Big Bear Lake"
+      ]
+    },
+    {
+      "name": "Ventura County",
+      "priority": 5,
+      "cities": [
+        "Ventura",
+        "Oxnard",
+        "Thousand Oaks",
+        "Simi Valley",
+        "Camarillo",
+        "Moorpark",
+        "Ojai",
+        "Port Hueneme",
+        "Fillmore",
+        "Santa Paula"
+      ]
+    },
+    {
+      "name": "Santa Barbara County",
+      "priority": 4,
+      "cities": [
+        "Santa Barbara",
+        "Goleta",
+        "Carpinteria",
+        "Lompoc",
+        "Santa Maria",
+        "Buellton",
+        "Solvang"
+      ]
+    },
+    {
+      "name": "Kern County",
+      "priority": 3,
+      "cities": [
+        "Bakersfield",
+        "Tehachapi",
+        "Delano",
+        "Ridgecrest",
+        "Taft",
+        "Arvin",
+        "Shafter",
+        "Wasco"
+      ]
+    }
+  ],
+  "excluded_areas": [
+    {
+      "name": "Beyond Radius",
+      "cities": [
+        "Las Vegas",
+        "Phoenix",
+        "San Francisco",
+        "Sacramento",
+        "San Jose",
+        "Fresno",
+        "San Luis Obispo"
+      ]
+    }
+  ],
+  "metadata": {
+    "description": "Southern California target locations within approximately 3 hours of Los Angeles",
+    "created": "2025-04-05",
+    "version": "1.0",
+    "priority_scale": "1-10 (10 being highest)"
+  }
+}

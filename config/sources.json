@@ -202,6 +202,347 @@
       "config": {
         "auth_required": false
       }
+    },
+    {
+      "name": "school_construction_news",
+      "url": "https://schoolconstructionnews.com/feed/",
+      "type": "rss",
+      "category": "Education",
+      "active": true,
+      "requires_js": false,
+      "tags": ["education", "news"]
+    },
+    {
+      "name": "healthcare_facilities_today",
+      "url": "https://www.healthcarefacilitiestoday.com/feed/",
+      "type": "rss",
+      "category": "Healthcare",
+      "active": true,
+      "requires_js": false,
+      "tags": ["healthcare", "facilities"]
+    },
+    {
+      "name": "smart_energy_decisions",
+      "url": "https://www.smartenergydecisions.com/rss/",
+      "type": "rss",
+      "category": "Energy/Utilities",
+      "active": true,
+      "requires_js": false,
+      "tags": ["energy", "sustainability"]
+    },
+    {
+      "name": "education_dive",
+      "url": "https://www.k12dive.com/feeds/news/",
+      "type": "rss",
+      "category": "Education",
+      "active": true,
+      "requires_js": false,
+      "tags": ["education", "news"]
+    },
+    {
+      "name": "facilities_net",
+      "url": "https://www.facilitiesnet.com/rss/",
+      "type": "rss",
+      "category": "Facility Management",
+      "active": true,
+      "requires_js": false,
+      "tags": ["facilities", "management"]
+    },
+    {
+      "name": "california_builder_developer",
+      "url": "https://builder.media/feed/",
+      "type": "rss",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "residential"]
+    },
+    {
+      "name": "santa_ana_city_planning",
+      "url": "https://www.santa-ana.org/pb/planning-division/current-projects",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "santa_ana"
+      }
+    },
+    {
+      "name": "long_beach_city_planning",
+      "url": "https://www.longbeach.gov/lbds/planning/",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "long_beach"
+      }
+    },
+    {
+      "name": "anaheim_city_planning",
+      "url": "https://www.anaheim.net/850/Planning",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "anaheim"
+      }
+    },
+    {
+      "name": "constructech",
+      "url": "https://constructech.com/feed/",
+      "type": "rss",
+      "category": "Construction Technology",
+      "active": true,
+      "requires_js": false,
+      "tags": ["technology", "innovation"]
+    },
+    {
+      "name": "highways_today",
+      "url": "https://highways.today/feed/",
+      "type": "rss",
+      "category": "Infrastructure",
+      "active": true,
+      "requires_js": false,
+      "tags": ["infrastructure", "transportation"]
+    },
+    {
+      "name": "healthcare_construction_renovation",
+      "url": "https://healthcareconstruction.com/feed/",
+      "type": "rss",
+      "category": "Healthcare",
+      "active": true,
+      "requires_js": false,
+      "tags": ["healthcare", "renovation"]
+    },
+    {
+      "name": "us_army_corps_engineers",
+      "url": "https://www.usace.army.mil/Media/News/",
+      "type": "website",
+      "category": "Government",
+      "active": true,
+      "requires_js": false,
+      "tags": ["government", "military", "infrastructure"]
+    },
+    {
+      "name": "ca_dept_gen_services",
+      "url": "https://www.dgs.ca.gov/BSC/News",
+      "type": "website",
+      "category": "Government",
+      "active": true,
+      "requires_js": true,
+      "tags": ["government", "california", "regulations"]
+    },
+    {
+      "name": "riverside_city_planning",
+      "url": "https://riversideca.gov/cedd/planning/development-projects",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "requires_browser"],
+      "config": {
+        "city_name": "riverside"
+      }
+    },
+    {
+      "name": "active_bids_api",
+      "url": "https://api.activebids.example.com/v1/status",
+      "type": "api",
+      "category": "API Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "bids", "active"],
+      "config": {
+        "auth_required": true,
+        "auth_type": "oauth2",
+        "client_id_env_var": "ACTIVEBIDS_CLIENT_ID",
+        "client_secret_env_var": "ACTIVEBIDS_CLIENT_SECRET"
+      }
+    },
+    {
+      "name": "legal_documents_api",
+      "url": "https://api.legaldocs.example.com/v2/health",
+      "type": "api",
+      "category": "Legal Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "legal", "documents"],
+      "config": {
+        "auth_required": true,
+        "auth_type": "api_key",
+        "header_name": "X-API-Key",
+        "api_key_env_var": "LEGAL_DOCS_API_KEY"
+      }
+    },
+    {
+      "name": "planning_departments_api",
+      "url": "https://api.planningdepts.example.com/health",
+      "type": "api",
+      "category": "API Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "government", "planning"],
+      "config": {
+        "auth_required": true,
+        "auth_type": "basic",
+        "username_env_var": "PLANNING_API_USER",
+        "password_env_var": "PLANNING_API_PASSWORD"
+      }
+    },
+    {
+      "name": "construction_data_service",
+      "url": "https://api.constructiondata.example.com/status",
+      "type": "api",
+      "category": "API Sources",
+      "active": false,
+      "requires_js": false,
+      "tags": ["api", "statistics", "projects"],
+      "config": {
+        "auth_required": true,
+        "auth_type": "bearer",
+        "auth_token_env_var": "CONSTRUCTION_DATA_TOKEN"
+      }
+    },
+    {
+      "name": "california_construction_bidding",
+      "url": "https://www.ebidboard.com/public/rss/ca-const-bid.aspx",
+      "type": "rss",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "bids", "projects"]
+    },
+    {
+      "name": "socal_builders_exchange",
+      "url": "https://www.bxsocal.org/planroom/projects",
+      "type": "website",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "projects", "commercial"]
+    },
+    {
+      "name": "la_county_public_works",
+      "url": "https://dpw.lacounty.gov/contracts/opportunities.aspx",
+      "type": "website",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "government", "infrastructure"]
+    },
+    {
+      "name": "orange_county_planning",
+      "url": "https://www.ocpublicworks.com/ds/planning/hearing",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "orange_county"],
+      "config": {
+        "city_name": "orange_county"
+      }
+    },
+    {
+      "name": "ventura_county_planning",
+      "url": "https://vcrma.org/planning-division-public-hearings",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "permits", "ventura_county"],
+      "config": {
+        "city_name": "ventura_county"
+      }
+    },
+    {
+      "name": "san_bernardino_county_planning",
+      "url": "http://www.sbcounty.gov/landuseservices/Public%20Notices/Planning_Notices.aspx",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "san_bernardino"],
+      "config": {
+        "city_name": "san_bernardino_county"
+      }
+    },
+    {
+      "name": "caltrans_projects",
+      "url": "https://dot.ca.gov/programs/design/project-announcements-and-construction-start-announcements",
+      "type": "website",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "transportation", "government"]
+    },
+    {
+      "name": "santa_barbara_planning",
+      "url": "https://www.santabarbaraca.gov/gov/depts/cd/planning/mbar/agendas.asp",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "permits", "santa_barbara"],
+      "config": {
+        "city_name": "santa_barbara"
+      }
+    },
+    {
+      "name": "bakersfield_planning",
+      "url": "https://www.bakersfieldcity.us/609/Planning-Division",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "permits", "bakersfield"],
+      "config": {
+        "city_name": "bakersfield"
+      }
+    },
+    {
+      "name": "palm_springs_planning",
+      "url": "https://www.palmspringsca.gov/government/departments/planning/current-projects-and-applications",
+      "type": "city_portal",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "permits", "palm_springs"],
+      "config": {
+        "city_name": "palm_springs"
+      }
+    },
+    {
+      "name": "socal_agc_chapter",
+      "url": "https://www.agc-ca.org/rss/news-feed",
+      "type": "rss",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "industry_association"]
+    },
+    {
+      "name": "la_metro_projects",
+      "url": "https://www.metro.net/projects/",
+      "type": "website",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": false,
+      "tags": ["socal", "transportation", "los_angeles"]
+    },
+    {
+      "name": "socal_bid_network",
+      "url": "https://www.bidnet.com/grp-search/?region=California",
+      "type": "website",
+      "category": "Southern California Specific",
+      "active": true,
+      "requires_js": true,
+      "tags": ["socal", "bids", "projects"]
     }
   ]
 }

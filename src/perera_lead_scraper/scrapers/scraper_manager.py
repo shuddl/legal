@@ -13,10 +13,10 @@ import concurrent.futures
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional, Type, Set
 
-from perera_lead_scraper.utils.source_registry import SourceRegistry, DataSource
-from perera_lead_scraper.utils.storage import LeadStorage
-from perera_lead_scraper.scrapers.base_scraper import BaseScraper
-from perera_lead_scraper.config import config
+from src.perera_lead_scraper.utils.source_registry import SourceRegistry, DataSource
+from src.perera_lead_scraper.utils.storage import LeadStorage
+from src.perera_lead_scraper.scrapers.base_scraper import BaseScraper
+from src.perera_lead_scraper.config import config
 
 # Configure logger
 logger = logging.getLogger(__name__)
@@ -80,7 +80,7 @@ class ScraperManager:
         """
         # Import the appropriate scraper class based on source type
         if source.type == "rss":
-            from perera_lead_scraper.scrapers.rss_scraper import RSSFeedScraper
+            from src.perera_lead_scraper.scrapers.rss_scraper import RSSFeedScraper
             
             # Get RSS feed URLs from configuration
             rss_config = config.load_source_config(config.rss_sources_path)
@@ -98,13 +98,13 @@ class ScraperManager:
             
         elif source.type == "website" or source.type == "city_portal":
             if source.type == "city_portal":
-                from perera_lead_scraper.scrapers.city_portal_scraper import CityPortalScraper
+                from src.perera_lead_scraper.scrapers.city_portal_scraper import CityPortalScraper
                 
                 city_name = source.config.get("city_name", source.name)
                 return CityPortalScraper(city_name, str(config.city_portals_path), source.config.get("scrape_frequency", config.scrape_interval_hours))
                 
             else:
-                from perera_lead_scraper.scrapers.news_scraper import NewsWebsiteScraper
+                from src.perera_lead_scraper.scrapers.news_scraper import NewsWebsiteScraper
                 
                 return NewsWebsiteScraper(source.name, source.url, str(config.news_sources_path), source.config.get("scrape_frequency", config.scrape_interval_hours))
         

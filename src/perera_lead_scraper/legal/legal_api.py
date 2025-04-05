@@ -719,3 +719,74 @@ class LegalAPI:
                 }
         
         return results
+    
+    def verify_api_access(self) -> Dict[str, bool]:
+        """
+        Verify access to all configured API providers.
+        
+        Returns:
+            Dict[str, bool]: Dictionary with provider names as keys and 
+                            boolean values indicating access status
+        """
+        access_status = {}
+        
+        for provider in self.SUPPORTED_PROVIDERS:
+            if provider not in self.credentials:
+                logger.warning(f"No credentials found for provider: {provider}")
+                access_status[provider] = False
+                continue
+                
+            try:
+                logger.info(f"Verifying access to {provider} API")
+                
+                # Get base URL for the provider
+                base_url = self.credentials.get(provider, {}).get("base_url")
+                if not base_url:
+                    logger.error(f"Base URL not configured for provider: {provider}")
+                    access_status[provider] = False
+                    continue
+                
+                # Get authentication headers
+                headers = self._get_auth_headers(provider)
+                
+                # Use a simple endpoint to verify connection
+                # For most APIs, this would be a status or healthcheck endpoint
+                if provider == "public_records":
+                    url = urljoin(base_url, "api/v1/status")
+                elif provider == "permit_data":
+                    url = urljoin(base_url, "status")
+                elif provider == "contract_finder":
+                    url = urljoin(base_url, "api/status")
+                elif provider == "court_records":
+                    url = urljoin(base_url, "v2/status")
+                elif provider == "regulatory_filings":
+                    url = urljoin(base_url, "api/status")
+                else:
+                    url = urljoin(base_url, "status")
+                
+                # Make a simple GET request to verify access
+                response = self.session.get(
+                    url,
+                    headers=headers,
+                    timeout=self.timeout
+                )
+                
+                # Check for success (status code 200-299)
+                if 200 <= response.status_code < 300:
+                    access_status[provider] = True
+                    logger.info(f"Successfully verified access to {provider} API")
+                else:
+                    access_status[provider] = False
+                    logger.error(f"Failed to verify access to {provider} API: {response.status_code} {response.text}")
+                    
+            except AuthenticationError as e:
+                logger.error(f"Authentication error for {provider} API: {e}")
+                access_status[provider] = False
+            except requests.RequestException as e:
+                logger.error(f"Request error for {provider} API: {e}")
+                access_status[provider] = False
+            except Exception as e:
+                logger.error(f"Unexpected error verifying {provider} API: {e}")
+                access_status[provider] = False
+                
+        return access_status
