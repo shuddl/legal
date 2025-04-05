@@ -273,13 +273,8 @@ print(f"Found {len(leads)} matching leads")
 ## Contact Information
 
 Development Team:
-- **Lead Developer**: dev-lead@example.com
-- **System Architect**: architect@example.com
-- **QA Lead**: qa-lead@example.com
-- **Support**: support@example.com
+<spencer@shuddl.io>
 
----
-
-# Thank You!
+# Thank You
 
 **Questions & Answers**

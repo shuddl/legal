@@ -32,7 +32,8 @@ from perera_lead_scraper.utils.timeout import timeout_handler
 logger = logging.getLogger(__name__)
 
 # Constants
-CONFIG_DIR = Path(config.CONFIG_DIR)
+# Fix CONFIG_DIR to use a Path relative to the project root
+CONFIG_DIR = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../config')))
 CLASSIFICATION_CONFIG_FILE = CONFIG_DIR / "classification_config.json"
 CONFIDENCE_THRESHOLD = 0.65  # Minimum confidence for reliable classification
 

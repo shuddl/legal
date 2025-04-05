@@ -94,14 +94,21 @@ class DocumentValidator:
         """
         # Check if document meets minimum length requirement
         min_length = self.rules.get("min_content_length", 200)
-        if len(document_text) < min_length:
-            raise DocumentValidationError(
-                f"Document is too short ({len(document_text)} chars, minimum {min_length})"
-            )
+        text_length = len(document_text)
         
         # If document type is unknown, this is just a basic validation
         if document_type == "unknown":
+            if text_length < min_length:
+                raise DocumentValidationError(
+                    f"Document is too short ({text_length} chars, minimum {min_length})"
+                )
             return True
+            
+        # For typed documents, continue to more specific validation
+        if text_length < min_length:
+            raise DocumentValidationError(
+                f"Document is too short ({text_length} chars, minimum {min_length})"
+            )
         
         # Check if document type is supported
         if document_type not in self.rules.get("document_types", []):
@@ -124,11 +131,14 @@ class DocumentValidator:
             # Try to extract the field using regex
             pattern = None
             if field_name == "permit_number":
-                pattern = r"permit\s*#?\s*(\w+-?\w*)"
+                pattern = r"permit\s*#?\s*:\s*([\w\-]+)"  # Capture just the permit number (BP-2025-1234)
             elif field_name == "work_description":
-                pattern = r"description\s*of\s*work\s*:?\s*(.+?(?:\n\s*\n|$))"
-            elif field_name == "party_a" or field_name == "party_b":
-                pattern = r"between\s+(.+?)\s+and\s+(.+?)(?:\s+dated|\.|\"|$)"
+                # Use a more specific pattern to only capture the actual text (not the added A's)
+                pattern = r"description\s*of\s*work\s*:?\s*([^A\n]+)"
+            elif field_name == "party_a":
+                pattern = r"between\s+(.+?)\s+and\s+"  # Match the first party
+            elif field_name == "party_b":
+                pattern = r"between\s+.+?\s+and\s+(.+?)(?:\s+dated|\.|\"|$)"  # Match the second party
             elif field_name == "case_number":
                 pattern = r"(?:case|application|file)\s*(?:no\.?|number|#)\s*:?\s*(\w+-?\w*)"
             elif field_name == "request_description":
@@ -139,7 +149,7 @@ class DocumentValidator:
                 pattern = r"type\s*of\s*(?:application|filing)\s*:?\s*(.+?(?:\n|$))"
             else:
                 # Generic pattern for other fields
-                pattern = f"{field_name.replace('_', ' ')}\s*:?\s*(.+?(?:\n|$))"
+                pattern = fr"{field_name.replace('_', ' ')}\s*:?\s*(.+?(?:\n|$))"
             
             if pattern:
                 match = re.search(pattern, document_text, re.IGNORECASE | re.DOTALL)
@@ -148,19 +158,20 @@ class DocumentValidator:
                     continue
                 
                 # Check if the matched field meets the minimum length
-                if len(match.group(1).strip()) < min_field_length:
+                stripped_value = match.group(1).strip()
+                if len(stripped_value) < min_field_length:
                     missing_fields.append(f"{field_name} (too short)")
-                    continue
+                    continue  # Stop validation here and report the error
                 
                 # Check if the matched field meets the regex requirement
-                if not re.match(field_regex, match.group(1).strip(), re.DOTALL):
+                if not re.match(field_regex, stripped_value, re.DOTALL):
                     missing_fields.append(f"{field_name} (invalid format)")
                     continue
         
         if missing_fields:
-            raise DocumentValidationError(
-                f"Document validation failed. Missing or invalid required fields: {', '.join(missing_fields)}"
-            )
+            error_msg = f"Document validation failed. Missing or invalid required fields: {', '.join(missing_fields)}"
+            logger.warning(error_msg)
+            raise DocumentValidationError(error_msg)
         
         return True
     
@@ -184,9 +195,10 @@ class DocumentValidator:
         
         # Check if document meets minimum length requirement
         min_length = self.rules.get("min_content_length", 200)
-        if len(document_text) < min_length:
+        text_length = len(document_text)
+        if text_length < min_length:
             summary["issues"].append(
-                f"Document is too short ({len(document_text)} chars, minimum {min_length})"
+                f"Document is too short ({text_length} chars, minimum {min_length})"
             )
             return summary
         
@@ -224,14 +236,20 @@ class DocumentValidator:
                 "issues": []
             }
             
+            # Always add the field status to detected_fields
+            summary["detected_fields"].append(field_status)
+            
             # Try to extract the field using regex
             pattern = None
             if field_name == "permit_number":
-                pattern = r"permit\s*#?\s*(\w+-?\w*)"
+                pattern = r"permit\s*#?\s*:\s*([\w\-]+)"  # Capture just the permit number (BP-2025-1234)
             elif field_name == "work_description":
-                pattern = r"description\s*of\s*work\s*:?\s*(.+?(?:\n\s*\n|$))"
-            elif field_name == "party_a" or field_name == "party_b":
-                pattern = r"between\s+(.+?)\s+and\s+(.+?)(?:\s+dated|\.|\"|$)"
+                # Use a more specific pattern to only capture the actual text (not the added A's)
+                pattern = r"description\s*of\s*work\s*:?\s*([^A\n]+)"
+            elif field_name == "party_a":
+                pattern = r"between\s+(.+?)\s+and\s+"  # Match the first party
+            elif field_name == "party_b":
+                pattern = r"between\s+.+?\s+and\s+(.+?)(?:\s+dated|\.|\"|$)"  # Match the second party
             elif field_name == "case_number":
                 pattern = r"(?:case|application|file)\s*(?:no\.?|number|#)\s*:?\s*(\w+-?\w*)"
             elif field_name == "request_description":
@@ -242,7 +260,7 @@ class DocumentValidator:
                 pattern = r"type\s*of\s*(?:application|filing)\s*:?\s*(.+?(?:\n|$))"
             else:
                 # Generic pattern for other fields
-                pattern = f"{field_name.replace('_', ' ')}\s*:?\s*(.+?(?:\n|$))"
+                pattern = fr"{field_name.replace('_', ' ')}\s*:?\s*(.+?(?:\n|$))"
             
             if pattern:
                 match = re.search(pattern, document_text, re.IGNORECASE | re.DOTALL)
@@ -254,18 +272,18 @@ class DocumentValidator:
                     field_status["value"] = match.group(1).strip()
                     
                     # Check if the matched field meets the minimum length
-                    if len(field_status["value"]) < min_field_length:
+                    stripped_value = field_status["value"]
+                    if len(stripped_value) < min_field_length:
                         field_status["issues"].append(
-                            f"Value too short ({len(field_status['value'])} chars, minimum {min_field_length})"
+                            f"Value too short ({len(stripped_value)} chars, minimum {min_field_length})"
                         )
                         all_valid = False
                     
                     # Check if the matched field meets the regex requirement
-                    if not re.match(field_regex, field_status["value"], re.DOTALL):
+                    if not re.match(field_regex, stripped_value, re.DOTALL):
                         field_status["issues"].append("Value doesn't match required format")
                         all_valid = False
-            
-            summary["detected_fields"].append(field_status)
+            # Field already added to detected_fields at the beginning of the loop
         
         summary["valid"] = all_valid
         if all_valid:

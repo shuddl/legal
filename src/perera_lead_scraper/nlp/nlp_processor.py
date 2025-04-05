@@ -8,31 +8,40 @@ Provides natural language processing capabilities for analyzing construction lea
 extracting entities, classifying content, and assessing relevance.
 """
 
-import os
-import re
-import json
-import logging
-import unicodedata
-import time
 from typing import Dict, List, Set, Tuple, Optional, Any, Pattern, Match, Union
 from datetime import datetime, date
 from pathlib import Path
+import os
+import re
+import logging
+import json
 import html
+import unicodedata
+import spacy
+import nltk
 from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-import warnings
-
-import spacy
 from spacy.tokens import Doc, Span, Token
 from spacy.language import Language
 from spacy.matcher import Matcher, PhraseMatcher
 from spacy.pipeline import EntityRuler
-import nltk
 from nltk.tokenize import sent_tokenize
 from bs4 import BeautifulSoup
 
-from perera_lead_scraper.config import config
+try:
+    from perera_lead_scraper.config import config
+except ImportError:
+    # Fallback for tests or direct module usage
+    from pathlib import Path
+    
+    class DefaultConfig:
+        def __init__(self):
+            self.PROJECT_ROOT = Path(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
+            self.CONFIG_DIR = self.PROJECT_ROOT / "config"
+    
+    config = DefaultConfig()
+
 from perera_lead_scraper.models.lead import MarketSector
 
 # Configure logger
@@ -46,7 +55,8 @@ except LookupError:
 
 # Constants
 DEFAULT_MODEL = "en_core_web_lg"
-CONFIG_DIR = Path(config.CONFIG_DIR)
+# Use getattr with fallback to avoid AttributeError on config.CONFIG_DIR
+CONFIG_DIR = Path(getattr(config, 'CONFIG_DIR', os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../config'))))
 CONSTRUCTION_ENTITIES_FILE = CONFIG_DIR / "construction_entities.json"
 KEYWORDS_FILE = CONFIG_DIR / "keywords.json"
 TARGET_MARKETS_FILE = CONFIG_DIR / "target_locations.json"

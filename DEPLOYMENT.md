@@ -17,11 +17,13 @@ This document provides detailed instructions for deploying the Perera Constructi
 ### Hardware Requirements
 
 **Minimum:**
+
 - 2GB RAM
 - 1 CPU core
 - 10GB disk space
 
 **Recommended:**
+
 - 4GB RAM
 - 2 CPU cores
 - 20GB disk space
@@ -29,6 +31,7 @@ This document provides detailed instructions for deploying the Perera Constructi
 ### Software Requirements
 
 **Standard Deployment:**
+
 - Python 3.9+
 - pip (Python package manager)
 - git
@@ -36,6 +39,7 @@ This document provides detailed instructions for deploying the Perera Constructi
 - Internet connectivity
 
 **Docker Deployment:**
+
 - Docker Engine 19.03+
 - Docker Compose 1.27+
 - Internet connectivity
@@ -53,17 +57,20 @@ This document provides detailed instructions for deploying the Perera Constructi
 1. **Install Python 3.9+**:
 
    **Ubuntu/Debian:**
+
    ```bash
    sudo apt update
    sudo apt install python3 python3-pip python3-venv
    ```
 
    **CentOS/RHEL:**
+
    ```bash
    sudo yum install python39 python39-pip
    ```
 
    **macOS:**
+
    ```bash
    brew install python
    ```
@@ -74,16 +81,19 @@ This document provides detailed instructions for deploying the Perera Constructi
 2. **Install Git**:
 
    **Ubuntu/Debian:**
+
    ```bash
    sudo apt install git
    ```
 
    **CentOS/RHEL:**
+
    ```bash
    sudo yum install git
    ```
 
    **macOS:**
+
    ```bash
    brew install git
    ```
@@ -106,6 +116,7 @@ This document provides detailed instructions for deploying the Perera Constructi
    Follow the official [Docker Compose installation guide](https://docs.docker.com/compose/install/)
 
 3. **Verify Installation**:
+
    ```bash
    docker --version
    docker-compose --version
@@ -142,11 +153,13 @@ python -m src.perera_lead_scraper.cli init-db
 ### Configure the Application
 
 1. Create a configuration file:
+
    ```bash
    cp config.example.yml config.yml
    ```
 
 2. Edit the configuration file:
+
    ```bash
    nano config.yml  # Or use any text editor
    ```
@@ -167,11 +180,13 @@ mkdir -p data exports logs
 ### Run the Application
 
 **Start the API server:**
+
 ```bash
 python -m src.perera_lead_scraper.api.api
 ```
 
 **Start the orchestrator (in a separate terminal):**
+
 ```bash
 python -m src.perera_lead_scraper.orchestrator
 ```
@@ -243,17 +258,20 @@ sudo systemctl start perera-lead-scraper-orchestrator
 ### Basic Deployment
 
 1. **Clone the Repository**:
+
    ```bash
    git clone https://github.com/perera-construction/lead-scraper.git
    cd lead-scraper
    ```
 
 2. **Create Environment File**:
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Edit the `.env` file to set your configuration:
+
    ```
    API_KEY=your_secure_api_key
    HUBSPOT_API_KEY=your_hubspot_api_key
@@ -262,11 +280,13 @@ sudo systemctl start perera-lead-scraper-orchestrator
    ```
 
 3. **Start the Services**:
+
    ```bash
    docker-compose up -d
    ```
 
 4. **Verify Deployment**:
+
    ```bash
    docker-compose ps
    curl http://localhost:8000/api/health
@@ -360,6 +380,7 @@ curl http://localhost:8000/api/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "operational",
@@ -409,11 +430,13 @@ curl -X GET http://localhost:8000/api/leads \
 ### Check Logs
 
 Standard deployment:
+
 ```bash
 cat logs/app.log
 ```
 
 Docker deployment:
+
 ```bash
 docker-compose logs -f
 ```
@@ -423,39 +446,46 @@ docker-compose logs -f
 ### Standard Deployment Upgrade
 
 1. **Stop the services**:
+
    ```bash
    sudo systemctl stop perera-lead-scraper-api
    sudo systemctl stop perera-lead-scraper-orchestrator
    ```
 
 2. **Backup data**:
+
    ```bash
    cp -r data data.bak
    ```
 
 3. **Update the code**:
+
    ```bash
    git pull origin main
    ```
 
 4. **Update dependencies**:
+
    ```bash
    source venv/bin/activate
    pip install -r requirements.txt
    ```
 
 5. **Run database migrations**:
+
    ```bash
    python -m src.perera_lead_scraper.cli migrate
    ```
 
 6. **Restart services**:
+
    ```bash
    sudo systemctl start perera-lead-scraper-api
    sudo systemctl start perera-lead-scraper-orchestrator
    ```
 
 7. **Verify upgrade**:
+
    ```bash
    curl http://localhost:8000/api/health
    ```
@@ -463,17 +493,20 @@ docker-compose logs -f
 ### Docker Deployment Upgrade
 
 1. **Backup data volumes**:
+
    ```bash
    docker run --rm -v perera-lead-scraper_data:/data -v $(pwd)/backup:/backup \
      alpine tar -czf /backup/data-backup.tar.gz /data
    ```
 
 2. **Pull the latest changes**:
+
    ```bash
    git pull origin main
    ```
 
 3. **Rebuild and restart containers**:
+
    ```bash
    docker-compose down
    docker-compose build
@@ -481,6 +514,7 @@ docker-compose logs -f
    ```
 
 4. **Verify upgrade**:
+
    ```bash
    curl http://localhost:8000/api/health
    ```

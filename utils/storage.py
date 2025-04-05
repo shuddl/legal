@@ -11,6 +11,7 @@ import os
 import csv
 import json
 import uuid
+import abc
 from datetime import datetime
 from typing import List, Dict, Any, Optional, Tuple, Type, TypeVar, Iterator, ContextManager
 from contextlib import contextmanager
@@ -50,6 +51,54 @@ Base = declarative_base()
 
 # Type variable for model classes
 T = TypeVar('T')
+
+
+class LeadStorage(abc.ABC):
+    """
+    Abstract base class for lead storage implementations.
+    
+    Defines the interface for saving, retrieving, and querying leads.
+    """
+    
+    @abc.abstractmethod
+    def save_lead(self, lead: Lead) -> Lead:
+        """
+        Save a lead to the database.
+        
+        Args:
+            lead: Lead to save
+        
+        Returns:
+            Lead: Saved lead with ID
+        """
+        pass
+    
+    @abc.abstractmethod
+    def get_lead_by_id(self, lead_id: uuid.UUID) -> Optional[Lead]:
+        """
+        Get a lead by ID.
+        
+        Args:
+            lead_id: Lead ID
+        
+        Returns:
+            Lead or None: Lead if found, None otherwise
+        """
+        pass
+    
+    @abc.abstractmethod
+    def update_lead_status(self, lead_id: uuid.UUID, status: LeadStatus) -> Optional[Lead]:
+        """
+        Update a lead's status.
+        
+        Args:
+            lead_id: Lead ID
+            status: New status
+        
+        Returns:
+            Lead or None: Updated lead if found, None otherwise
+        """
+        pass
 
 
 class LeadModel(Base):
@@ -250,7 +299,7 @@ class ContactModel(Base):
         )
 
 
-class LeadStorage:
+class LocalStorage(LeadStorage):
     """
     Storage manager for leads.
     
