@@ -19,6 +19,7 @@ import html
 import unicodedata
 import spacy
 import nltk
+import sys
 from functools import lru_cache
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
@@ -30,7 +31,7 @@ from nltk.tokenize import sent_tokenize
 from bs4 import BeautifulSoup
 
 try:
-    from perera_lead_scraper.config import config
+    from src.perera_lead_scraper.config import config
 except ImportError:
     # Fallback for tests or direct module usage
     from pathlib import Path
@@ -42,7 +43,7 @@ except ImportError:
     
     config = DefaultConfig()
 
-from perera_lead_scraper.models.lead import MarketSector
+from src.perera_lead_scraper.models.lead import MarketSector
 
 # Configure logger
 logger = logging.getLogger(__name__)
@@ -101,7 +102,14 @@ class ProcessingTimeoutError(NLPError):
     pass
 
 
-@Language.factory("construction_entities")
+# Use singleton factory guard pattern to prevent duplicate registration
+if "construction_entities" not in Language.factories:
+    @Language.factory("construction_entities", default_config={})
+    def create_construction_entities(nlp, name, **cfg):
+        # Import directly from current module since the component is defined here
+        return ConstructionEntityComponent(nlp=nlp, name=name, **cfg)
+
+
 class ConstructionEntityComponent:
     """
     Custom spaCy pipeline component for construction-specific entities.

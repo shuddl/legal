@@ -10,6 +10,90 @@ import json
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Dict, List, Any, Optional, Set, Union
+from enum import Enum, auto
+
+class LeadStatus(str, Enum):
+    """Status of a lead in the pipeline."""
+    NEW = "new"
+    REVIEWING = "reviewing"
+    QUALIFIED = "qualified"
+    CONTACTED = "contacted"
+    RESPONDED = "responded"
+    MEETING = "meeting"
+    PROPOSAL = "proposal"
+    NEGOTIATING = "negotiating"
+    WON = "won"
+    LOST = "lost"
+    ARCHIVED = "archived"
+    DUPLICATE = "duplicate"
+    REJECTED = "rejected"
+    ENRICHED = "enriched"
+
+class MarketSector(str, Enum):
+    """Target market sectors for construction leads."""
+    HEALTHCARE = "healthcare"
+    EDUCATION = "education"
+    COMMERCIAL = "commercial"
+    RESIDENTIAL = "residential"
+    ENTERTAINMENT = "entertainment"
+    ENERGY = "energy"
+    INDUSTRIAL = "industrial"
+    GOVERNMENT = "government"
+    TRANSPORTATION = "transportation"
+    MIXED_USE = "mixed_use"
+    OTHER = "other"
+
+class LeadType(str, Enum):
+    """Types of construction leads."""
+    NEW_CONSTRUCTION = "new_construction"
+    RENOVATION = "renovation"
+    ADDITION = "addition"
+    TENANT_IMPROVEMENT = "tenant_improvement"
+    INFRASTRUCTURE = "infrastructure"
+    DEMOLITION = "demolition"
+    DESIGN_BUILD = "design_build"
+    EXPANSION = "expansion"
+    MAINTENANCE = "maintenance"
+    OTHER = "other"
+
+class SourceType(str, Enum):
+    """Types of lead data sources."""
+    CITY_PORTAL = "city_portal"
+    RSS_FEED = "rss_feed"
+    WEBSITE = "website"
+    NEWS = "news"
+    BID_PLATFORM = "bid_platform"
+    GOVERNMENT = "government"
+    MANUAL = "manual"
+    API = "api"
+    OTHER = "other"
+
+@dataclass
+class DataSource:
+    """Information about a lead data source."""
+    id: str
+    name: str
+    type: SourceType
+    url: Optional[str] = None
+    description: Optional[str] = None
+    active: bool = True
+    
+@dataclass
+class LeadSearchParams:
+    """Parameters for searching leads."""
+    market_sectors: Optional[List[str]] = None
+    statuses: Optional[List[str]] = None
+    lead_types: Optional[List[str]] = None
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    keywords: Optional[List[str]] = None
+    locations: Optional[List[str]] = None
+    limit: int = 100
+    offset: int = 0
+    sort_by: str = "retrieved_date"
+    sort_order: str = "desc"
 
 @dataclass
 class Location:

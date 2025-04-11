@@ -10,8 +10,15 @@ import sys
 import pytest
 from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add the project root directory to Python path
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+    
+# Add the src directory to Python path for accessing perera_lead_scraper
+src_path = os.path.join(project_root, "src")
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
 
 # Import the package
 import src.perera_lead_scraper as perera_lead_scraper

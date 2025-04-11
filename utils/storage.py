@@ -185,7 +185,7 @@ class LeadModel(Base):
     @classmethod
     def from_lead(cls, lead: Lead) -> "LeadModel":
         """Create ORM model from Pydantic model."""
-        lead_dict = lead.model_dump()
+        lead_dict = lead.to_dict()
         
         # Extract location fields
         location = lead_dict.pop('location', {})
@@ -196,10 +196,27 @@ class LeadModel(Base):
         # Convert UUID to string
         if lead_dict.get('id'):
             lead_dict['id'] = str(lead_dict['id'])
+            
+        # Filter out keys that don't exist in the LeadModel class
+        valid_keys = {c.name for c in cls.__table__.columns}
+        filtered_dict = {k: v for k, v in lead_dict.items() if k in valid_keys}
+        
+        # Handle datetime fields - ensure they are proper datetime objects
+        date_fields = ['publication_date', 'retrieved_date', 'created_at', 'updated_at']
+        for field in date_fields:
+            if field in filtered_dict and isinstance(filtered_dict[field], str):
+                try:
+                    filtered_dict[field] = datetime.fromisoformat(filtered_dict[field])
+                except (ValueError, TypeError):
+                    # If we can't parse the date, just set it to None (or current time for required fields)
+                    if field in ['retrieved_date', 'created_at', 'updated_at']:
+                        filtered_dict[field] = datetime.now()
+                    else:
+                        filtered_dict[field] = None
         
         # Create ORM model
         lead_model = cls(**{
-            **lead_dict,
+            **filtered_dict,
             'address': location.get('address'),
             'city': location.get('city'),
             'state': location.get('state'),
@@ -217,7 +234,10 @@ class LeadModel(Base):
     
     def update_from_lead(self, lead: Lead) -> None:
         """Update ORM model from Pydantic model."""
-        lead_dict = lead.model_dump(exclude={'id', 'created_at', 'contacts'})
+        lead_dict = lead.to_dict()
+        lead_dict.pop('id', None)
+        lead_dict.pop('created_at', None)
+        lead_dict.pop('contacts', None)
         
         # Extract location fields
         location = lead_dict.pop('location', {})
@@ -291,11 +311,19 @@ class ContactModel(Base):
     @classmethod
     def from_contact(cls, contact: Contact, lead_model: LeadModel) -> "ContactModel":
         """Create ORM model from Pydantic model."""
-        contact_dict = contact.model_dump()
+        # Handle both Contact objects with to_dict and dict objects
+        if hasattr(contact, 'to_dict'):
+            contact_dict = contact.to_dict()
+        else:
+            contact_dict = contact
+        
+        # Filter out keys that don't exist in the ContactModel class
+        valid_keys = {c.name for c in cls.__table__.columns if c.name != 'lead_id'}
+        filtered_dict = {k: v for k, v in contact_dict.items() if k in valid_keys}
         
         return cls(
             lead_id=lead_model.id,
-            **contact_dict
+            **filtered_dict
         )
 
 
@@ -698,7 +726,7 @@ class LocalStorage(LeadStorage):
             writer.writeheader()
             
             for lead in leads:
-                lead_dict = lead.model_dump()
+                lead_dict = lead.to_dict()
                 
                 # Extract location
                 location = lead_dict.get('location', {})
@@ -752,7 +780,7 @@ class LocalStorage(LeadStorage):
                 leads = [self._orm_to_pydantic(lead) for lead in lead_models]
         
         # Convert leads to dictionaries
-        lead_dicts = [lead.model_dump() for lead in leads]
+        lead_dicts = [lead.to_dict() for lead in leads]
         
         # Convert dates to strings
         for lead_dict in lead_dicts:
@@ -826,5 +854,5 @@ class LocalStorage(LeadStorage):
         # Convert to dictionary
         lead_dict = lead_model.to_dict()
         
-        # Create Pydantic model
-        return Lead.model_validate(lead_dict)
+        # Create Lead model using from_dict
+        return Lead.from_dict(lead_dict)

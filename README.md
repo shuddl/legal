@@ -18,6 +18,7 @@ The Perera Construction Lead Scraper is a specialized tool designed to help cons
 - **Comprehensive Monitoring**: Built-in monitoring and reliability testing
 - **RESTful API**: Full-featured API for integration with other systems
 - **Docker Support**: Easy deployment using Docker and Docker Compose
+- **Interactive Dashboard**: Visualize, manage, and analyze leads through a user-friendly web interface
 
 ## System Requirements
 
@@ -112,6 +113,42 @@ python -m src.perera_lead_scraper.cli export --format csv --output leads.csv
 Run a specific data source:
 ```bash
 python -m src.perera_lead_scraper.cli run-source --source-id SOURCE_ID
+```
+
+### Interactive Dashboard
+
+The lead scraper includes a powerful interactive dashboard for visualizing and managing your leads:
+
+1. Start the dashboard:
+```bash
+streamlit run scripts/lead_dashboard.py
+```
+
+2. Open your browser to the URL provided in the terminal (typically http://localhost:8501)
+
+3. Use the dashboard to:
+   - View all leads with powerful filtering and sorting
+   - Analyze lead quality and distribution by market sector
+   - Test lead enrichment and export processes
+   - Visualize lead metrics with built-in charts
+   - Export selected leads to CSV or HubSpot
+
+### Live Scraping Testing
+
+Test lead scraping in a simulated live environment:
+
+```bash
+# List all available sources
+python scripts/test_live_scraping.py
+
+# Test a specific source
+python scripts/test_live_scraping.py --source SOURCE_ID --verbose
+
+# Test all sources with NLP processing
+python scripts/test_live_scraping.py --all --process --limit 3
+
+# Test and store results
+python scripts/test_live_scraping.py --all --process --store --output test_results/my_test.json
 ```
 
 ### API
