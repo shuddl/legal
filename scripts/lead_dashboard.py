@@ -21,13 +21,14 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from pathlib import Path
 
-# Add the project root to sys.path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add the project root to sys.path consistently
+sys.path.insert(0, "/Users/spencerpro/legal/src")
 
-from src.perera_lead_scraper.utils.storage import LeadStorage
-from src.perera_lead_scraper.models.lead import MarketSector, LeadStatus
-from src.perera_lead_scraper.enrichment.enrichment import LeadEnricher
-from src.perera_lead_scraper.hubspot.hubspot_mapper import HubSpotMapper
+# Now use consistent imports without the src. prefix
+from perera_lead_scraper.utils.storage import LeadStorage
+from perera_lead_scraper.models.lead import MarketSector, LeadStatus
+from perera_lead_scraper.enrichment.enrichment import LeadEnricher
+from perera_lead_scraper.hubspot.hubspot_mapper import HubSpotMapper
 
 # Configure logging
 logging.basicConfig(
